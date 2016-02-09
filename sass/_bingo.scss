@@ -1,0 +1,525 @@
+/***************************************************************
+
+     ____  _                   
+    |  _ \(_)                  
+    | |_) |_ _ __   __ _  ___  
+    |  _ <| | '_ \ / _` |/ _ \ 
+    | |_) | | | | | (_| | (_) |
+    |____/|_|_| |_|\__, |\___/ 
+                    __/ |      
+                   |___/       
+                        
+    @author : Ferry Brouwer
+    This template contains bingo styles (balls and cards)
+
+/***************************************************************/
+
+/**
+ * Mixin print single card
+ * 
+ * @param number $width
+ * @param number $height
+ * @param px $border-radius
+ * @param hexadecimal $background-color
+ */
+@mixin single-card($width: 187px, $height: 350px, $border-radius: 10px, $background-color: #bdcd00) {
+    $card-background-color: $background-color;
+    $card-bounding: $width $height;
+
+    @include border-radius($border-radius);
+    @include box-shadow(3px 3px 15px rgba(0, 0, 0, .5));
+    position: absolute;
+    visibility: hidden;
+    background-color: $card-background-color;
+    width: nth($card-bounding, 1);
+    height: nth($card-bounding, 2);
+
+    // title header day
+    header {
+        position: relative;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        font-size: 1.2em;
+        color: $card-background-color;
+        z-index:10;
+
+        h2 {
+            position: absolute;
+            text-transform: uppercase;
+            top: 0;
+            left: 20px;
+        }
+    }
+    
+    // when data-color attribute is provided, 
+    // add background color
+    @each $emailbingo-color in $emailbingo-colors {
+        &[data-color="#{nth($emailbingo-color, 1)}"] {
+            background-color: nth($emailbingo-color, 2);
+
+            // overwrite the header color
+            header {
+                color: nth($emailbingo-color, 2);
+            }
+        }
+    }
+    
+    // label container
+    .card-labels {
+        @include box-sizing(border-box);
+        @include border-radius($border-radius - ($border-radius/5));
+
+        $number-bounding: join( 
+            floor( (nth($card-bounding, 1) - 40px) / 3 ), // 40px is the margins
+            floor( (nth($card-bounding, 1) - 40px) / 3 )
+        );
+        $number-borders-bottom: true, true, true, true, true, true, false, false, false;
+        $number-borders-left: false, true, true, false, true, true, false, true, true;
+
+        position: absolute;
+        z-index: 0;
+        background-color: #fff;
+        margin: 10px;
+        padding: 40px 10px 10px 10px;
+        width: 167px;
+
+        .label-item {
+            @include box-sizing(border-box);
+            position: relative;
+            float: left;
+            font-weight: bold;
+            font-size: 1.7em;
+            background-color: $number-bounding;
+            width: nth($number-bounding, 1);
+            height: nth($number-bounding, 2);
+            line-height: nth($number-bounding, 2);
+            text-align: center;
+            display: block;
+            
+            // draw borders
+            @for $i from 1 through 9 {
+                &:nth-child(#{$i}) {
+                    @if ( nth($number-borders-bottom, $i) ){
+                        border-bottom: 1px solid #4d4d4d;
+                    }
+                    @if ( nth($number-borders-left, $i) ){
+                        border-left: 1px solid #4d4d4d;
+                    }
+                }
+            }
+            
+            .ball {
+                @include transform(scale3d(0,0,0));
+                top: 3px;
+                left: 3px;
+
+                span {
+                    top: -3px;
+                    left: 3px;
+                    font-size: 0.6em;
+                }
+
+                &[data-ball-visible="true"] {
+                    @include animation(scale_bingoball_in 1s forwards linear);
+                }
+            } 
+        }
+    } // .card-labels
+    
+    // bingo asset only visible when card is claimed
+    .bingo-asset {
+        @include sprite-icon(bingo);
+        margin-top: -#{sprite-icon-height(bingo)/2 + 40};
+        position: absolute;
+        left: -10px;
+        top: 48%;
+        z-index: 2;
+    
+        @include transform-origin(center);
+        @include transform(scale3d(0,0,0));
+        &.active {
+            @include animation(scale_bingoball_in 1s forwards linear);
+        }
+    }
+}// mixin single-card
+
+.bingo.notificationbar {
+    font-size: px-to-em(29);
+    color: #ffea00;
+}
+
+.bingo.blue-banner {
+	@include user-select(none);
+    height: 320px;
+    position: relative;
+
+    & > *[data-view] {
+        @include box-sizing(border-box);
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+
+        &[data-view="bingo-intro"],
+        &[data-view="bingo-outro"], 
+        &[data-view="bingo-preload"]{
+            html.csstransforms3d & {
+            	@include transition(transform 700ms ease-in-out);
+                @include transform(translateY(-320px));
+            }
+
+            z-index: 2;
+			text-align: center;
+
+			html.no-csstransforms3d & {
+            	top: -100%;
+			}
+        }
+        
+        /*
+        Bingo preload
+        ------------- */
+        &[data-view="bingo-preload"]{
+            color: #fff;
+            padding-top: 50px;
+
+            h1 {
+                margin-bottom: 0;
+            }
+
+            h2 {
+                font-size: 1.6em;
+                font-family: 'Open Sans Semibold';
+                font-weight: normal;
+                line-height: 1.3em;
+                margin: 0.4em 0 0 0;
+            }
+
+            .progress-container {
+                margin-top: 3em;
+                width: 400px;
+            }
+        }
+
+		/*
+		Bingo intro
+		----------- */
+        &[data-view="bingo-intro"] {
+            padding-top: 50px;
+
+            a.button {
+                font-size: 2em;
+                line-height: 2em;
+            }
+        }
+
+		/*
+		Bingo outro
+		------------ */
+        &[data-view="bingo-outro"] {
+            color: #fff;
+            font-size: 1.4em;
+            line-height: 1.5em;
+
+            h1 {
+                margin-bottom: 0;
+                font-size: 4em;
+                margin-top: 0.7em;
+                line-height: 0.9em;
+            }
+
+            h2 {
+                color: #fff;
+                font-size: 1.6em;
+				font-family: 'Open Sans Semibold';
+                font-weight: normal;
+                margin: 0.4em 0 0 0;
+				line-height: 1.3em;
+            }
+
+			.table-columns {
+				width: 500px;
+				margin: 0 auto;
+			}
+        }
+    }
+    
+    .ball {
+        $default-color: #db5951;
+        background-color: $default-color;
+        top: 0;
+        left: 0;
+        font-family: Arial;
+        width: 40px;
+        height: 40px;
+        border-radius: 25px;
+        font-size: 1.4em;
+        font-weight: bold;
+    
+        @each $i in $prefixes {
+            #{$i}user-select : none;
+        }
+        
+        // ball shadow with image instead of box-shadow for optimizing performance
+        // @include box-shadow( inset 1px 1px 5px rgba(0,0,0,.5) );
+        @include after-content {
+            @include sprite-icon(ball-shadow);
+        }
+        position: absolute;
+
+        &:before {
+            content: '';
+            position: absolute;
+            border-radius: 100%;
+            background-color: #fff;
+            width: 65%;
+            height: 65%;
+            z-index:0;
+            top: 20%;
+            left:10%;
+        }
+
+        span {
+            display: block;
+            position: absolute;
+            z-index: 1;
+            left: 10%;
+            top: 30%;
+            width: 65%;
+            height: 65%;
+            text-align: center;
+        }
+    }
+
+    // bigger balls in bowl
+    section.bowl-balls .ball-container .ball {
+        width: 44px;
+        height: 44px;
+        font-size: 1.5em;
+
+        &:after {
+            @include sprite-icon(ball-shadow-big);
+            width: 44px;
+            height: 44px;
+        }
+    }
+
+    .cards {
+        position: absolute;
+        background: #01b1e4;
+        height: 320px;
+        overflow: hidden;
+        min-width: 980px;
+
+        .card {
+            @include single-card;
+        }
+    }
+    
+    /**
+     * When there's a bingodraw but a card isn't claimed or is disabled
+     * Grey out the numbers and set font-weight to normal
+     * insert cross
+     */
+    &[data-bingodraw="true"] .cards article.card[data-claimed="false"],
+    &[data-bingodraw="true"] .cards article.card[data-disabled="true"] {
+        // cross
+        @include before-content {
+            @include transform-origin(center);
+            @include transform(rotate(45deg));
+
+            width: 170px;
+            height: 8px;
+            background-color: #db3d03;
+            z-index: 10;
+            top: 35%;
+            left: 10px;
+        }
+        @include after-content {
+            @include transform-origin(center);
+            @include transform(rotate(-45deg));
+
+            width: 170px;
+            height: 8px;
+            background-color: #db3d03;
+            z-index: 10;
+            top: 35%;
+            left: 10px;
+        }
+        position: absolute;       
+        .card-labels .label-item {
+            color: #cecece;
+            font-weight: normal;
+
+            .ball {
+                background-color: #cecece!important;
+                font-weight: normal;
+            }
+        }
+    }    
+
+    // bowl balls
+    .bowl-balls {
+        pointer-events: none;
+        height: 135px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        z-index: 11;
+        
+        canvas {
+            position: absolute;
+            bottom: 0;
+        }
+        canvas.box2d-debug {
+            z-index: 12;
+        }
+
+        .ball-container {
+            // @include transform(translate3d(0,0,0));
+
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 14;
+
+            .ball {
+                left: -50px;
+                position: absolute;
+            }
+        }
+    }
+}// .bingo.blue-banner
+
+/**
+ * GPU rendering
+ */
+// section.bingo.blue-banner {
+//     .bowl-balls .ball,
+//     *[data-view],
+//     article.card,
+//     canvas.bowl,
+//     article.card .label-item,
+//     article.card .label-item > * {
+//         @include backface-visibility(hidden);
+//         position: absolute;
+//     }
+
+//     section.cards,
+//     .ball-container {
+//         @include transform-style(preserve-3d);
+//         @include perspective(400);
+//     }
+// }
+
+
+// price hightlights in bingo
+.bingo-draw.price-highlights,
+.bingo-prices.price-highlights {
+    background-color: #fff;
+    margin-top: 0;
+    padding-top: 0;
+    
+    .prices {
+        article.price {
+            padding: 0;
+            text-align: center;
+
+            a {
+                @include transition( background-color 250ms ease-out );
+                padding: 15px;
+                text-decoration: none;
+                color: inherit;
+                display: block;
+
+                &:hover {
+                    background-color: $color-grey;
+                }
+
+                button {
+                    width: 100%;
+                    margin: 1em 0 0 0;
+                }
+            }
+            
+            &[data-claimed="true"] {
+                padding: 15px;
+            }
+
+            &[data-disabled="true"] {
+                padding: 15px;
+                .date-badge:before {
+                    background-color: darken($color-grey, 5);
+                }
+            }
+
+            .bingo-badge,
+            .not-claimed-badge,
+            .claimed-badge,
+            .disabled-badge {
+                @include transform-origin(center);
+                line-height: 36px;
+                padding-left: 50px;
+                font-weight: bold;
+                font-size: 1.2em;
+                display: inline-block;
+                margin: 1em auto 0 auto;
+
+                @include before-content {
+                    @include border-radius( 50% );
+                    background-color: #fff;
+                    border: 1px solid darken($color-grey, 5);
+                    left: 0;
+                    top: 0;
+                    width: 36px;
+                    height: 36px;
+                }
+
+                @include after-content {
+                    @include border-radius( 50% );
+                    left: 4px;
+                    top: 4px;
+                    background-color: $color-green;
+                    width: 30px;
+                    height: 30px;
+                }
+                
+                &.not-claimed-badge,
+                &.disabled-badge {
+                    &:after {
+                        background-color: $color-grey;
+                    }
+                }
+
+                &.bingo-badge {
+                    &:after {
+                        background-color: $color-orange;
+                    }
+                }
+            }
+            
+            .badge-container {
+                height: 40px;
+                overflow: hidden;
+                padding-top: 1em;
+
+                & > * {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+}
+
+.bingo-draw.price-highlights {
+    .prices {
+        article.price {
+            padding: 15px;
+
+            &[data-claimed="false"] {
+                .date-badge:before {
+                    background-color: darken($color-grey, 5);
+                }
+            }
+        }
+    }
+}

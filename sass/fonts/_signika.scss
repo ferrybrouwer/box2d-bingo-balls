@@ -1,0 +1,27 @@
+/**
+ * Signika regular
+ */
+@font-face {
+	font-family: 'Signika';
+	src: font-url('signika/signika-regular-webfont.eot');
+	src: font-url('signika/signika-regular-webfont.eot?#iefix') format('embedded-opentype'),
+	font-url('signika/signika-regular-webfont.woff') format('woff'),
+	font-url('signika/signika-regular-webfont.ttf') format('truetype'),
+	font-url('signika/signika-regular-webfont.svg#signikaregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/**
+ * Signika bold
+ */
+@font-face {
+	font-family: 'Signika';
+	src: font-url('signika/signika-semibold-webfont.eot');
+	src: font-url('signika/signika-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+	font-url('signika/signika-semibold-webfont.woff') format('woff'),
+	font-url('signika/signika-semibold-webfont.ttf') format('truetype'),
+	font-url('signika/signika-semibold-webfont.svg#signikasemibold') format('svg');
+	font-weight: bold;
+	font-style: normal;
+}

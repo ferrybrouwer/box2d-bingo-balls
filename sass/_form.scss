@@ -1,0 +1,481 @@
+/***************************************************************************
+	 _____                           _                           _       
+	|  ___|__  _ __ _ __ ___     ___| | ___ _ __ ___   ___ _ __ | |_ ___ 
+	| |_ / _ \| '__| '_ ` _ \   / _ \ |/ _ \ '_ ` _ \ / _ \ '_ \| __/ __|
+	|  _| (_) | |  | | | | | | |  __/ |  __/ | | | | |  __/ | | | |_\__ \
+	|_|  \___/|_|  |_| |_| |_|  \___|_|\___|_| |_| |_|\___|_| |_|\__|___/
+
+***************************************************************************/
+
+/**
+ * Placeholder Button
+ * default background color 'orange'
+ */
+%button {
+	@include gradient-background();
+	@include border-radius( 2px );
+	@include box-sizing( border-box );
+	@include box-shadow( 
+		inset 0 1px 0 0 rgba(255, 255, 255, .3),
+		inset 0 -1px 0px 0 rgba(255, 75, 2, 1),
+		0 1px 1px 0 rgba(0, 0, 0, .3)
+	);
+	border: 1px solid lighten($color-orange, 10);
+	border-bottom: none;
+	text-decoration: none;
+	font-family: 'Open Sans';
+	font-weight: 400;
+	line-height: 30px;
+	padding: 0 2em;
+	text-shadow: 0px -1px 0 rgba(0, 0, 0, .3);
+	display: inline-block;
+	text-align: center;
+	margin: 0.4em 0;
+	outline: none;
+	
+	&:hover {
+		@include gradient-background( lighten($color-orange, 5) );
+	}
+
+	// facebook buttons
+	&.facebook {
+		@include gradient-background( #5b6e99 );
+		@include box-shadow( 
+			inset 0 1px 0 0 rgba(255, 255, 255, .3),
+			inset 0 -1px 0px 0 rgba(44, 57, 81, 1),
+			0 1px 1px 0 rgba(0, 0, 0, .3)
+		);
+		border: 1px solid #5b6e99;
+		border-bottom: none;
+		padding-left: sprite-button-width(facebook) + 20;
+	
+		@include before-content {
+			@include sprite-button(facebook);
+			left: 10px;
+			bottom: 1px;
+		}
+
+		&:hover {
+			@include gradient-background( lighten(#5b6e99, 5) );
+		}
+	}
+	
+	/**
+	 * Disabled elements
+	 */
+	&[disabled],
+	&.disabled {
+		@include gradient-background( #cecece );
+		@include box-shadow( 
+			inset 0 1px 0 0 rgba(255, 255, 255, .3),
+			inset 0 -1px 0px 0 rgba(0, 0, 0, .2),
+			0 1px 1px 0 rgba(0, 0, 0, .2)
+		);
+		border: 1px solid darken(#cecece, 20);
+		border-bottom: none;
+		pointer-events: none;
+		cursor: default;
+	}
+
+	/**
+	 * Blue button
+	 */
+	&.blue {
+		@include gradient-background($color-blue);
+		border: 1px solid lighten($color-blue, 10);
+		@include box-shadow(
+			inset 0 1px 0 0 rgba(255, 255, 255, .3),
+			inset 0 -1px 0px 0 darken($color-blue, 5)
+		);
+
+		&:hover {
+			@include gradient-background(lighten($color-blue, 5));
+		}
+	}
+}
+
+/**
+ * Placeholder Input text
+ */
+%input-text {
+	@include transition( all 250ms ease-out );
+	@include border-radius( 5px );
+	@include box-sizing( border-box );
+	background-color: #fff;
+	border: 1px solid $color-grey-border;
+	padding: 0.8em 1em;
+	font-family: 'Open Sans';
+	font-weight: 400;
+	margin: 0.4em 0;
+
+	@include input-placeholder {
+		font-style: italic;
+		color: $color-grey-border;
+	}
+
+	&:focus {
+		background-color: $color-grey-light;
+		outline: none;
+	}
+
+	&.error {
+		border: 1px solid #ff0000;
+		background-color: $color-red;
+		color: #fff;
+	}
+}
+
+button,
+a.button,
+input[type="submit"] {
+	@extend %button;
+}
+
+/**
+ * Clear fieldset
+ */
+fieldset {
+	border: none;
+	padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"] {
+	@extend %input-text;
+}
+
+input[type="password"] {
+	font-family: 'Arial';
+}
+
+
+/**
+ * Progress container
+ */
+.progress-container {
+    position: relative;
+    max-width: 650px;
+    margin: 2em auto 2em auto;
+    overflow: hidden;
+    padding: 0.2em;
+    
+    progress {
+        width: 100%;
+        display: block;
+        margin: 0;
+    }
+
+    span.progress-percentage {
+        display: block;
+//        color: rgba(0, 0, 0, .6);
+		color: #fff;
+        right: 100%;
+        top: 4px;
+        margin-right: 20px;
+        white-space: nowrap;
+        font-family: 'Signika';
+        font-weight: bold;
+        font-size: 1.2em;
+
+//        text-shadow:
+//            0 1px 1px rgba(255, 255, 255, .6),
+//            0 -1px 1px rgba(0, 0, 0, .2);
+
+		text-shadow: 0 1px 1px rgba(0,0,0,.6);
+
+        @include after-content {
+            content: '%';
+            font-weight: normal;
+            display: inline-block;
+            font-size: 0.7em;
+            margin-left: 0.3em;
+        }
+
+        // overwrite to absolute
+        position: absolute;
+    }
+
+    // fallback stylings
+    div.fallback.progress {
+        width: 100%;
+    }
+}
+
+/* Key frame animation animate-stripes
+-------------------------------------- */
+@include keyframes(animate-stripes) {
+	0% {background-position: 0px 0px, 0 0, 0 0}
+	100% {background-position: -100px 0px, 0 0, 0 0}
+}
+
+/* HTML5 progress element
+-------------------------- */
+progress {
+	@include appearance(none);
+	@include border-radius(50px);
+	width: 400px;
+	height: 20px;
+	margin: 1em auto;
+	display: block;
+	border: none;
+
+	&::-webkit-progress-bar {
+		@include box-shadow(0 1px 0px 0 rgba(255, 255, 255, 0.2));
+		@include border-radius(50px);
+		background: #f7f7f7;
+		padding: 0;
+		height: 20px;
+	}
+
+	&::-webkit-progress-value {
+		@include border-radius(50px);
+		@include box-shadow(
+			inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+			0px 1px 3px rgba(0, 0, 0, .4)
+		);
+		@include background-image(
+			linear-gradient(45deg, transparent, transparent 33%, rgba(255, 255, 255, 0.1) 33%, rgba(255, 255, 255, 0.1) 66%, transparent 66%),
+			linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
+			linear-gradient(bottom, #8ac943, lighten(#8ac943, 20))
+		);
+
+		background-size: 25px 20px, 100% 100%, 100% 100%;
+		@include animation(animate-stripes 3s linear infinite);
+	}
+
+	&::-moz-progress-bar {
+		background-color: #8ac943;
+		@include background-size( 30px 30px );
+		@include border-radius(50px);
+		@include box-shadow(
+			inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+			0px 1px 3px rgba(0, 0, 0, .4)
+		);
+		@include background-image(
+			linear-gradient(45deg, transparent, transparent 33%, rgba(255, 255, 255, 0.1) 33%, rgba(255, 255, 255, 0.1) 66%, transparent 66%),
+			linear-gradient(top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.2)),
+			linear-gradient(bottom, #8ac943, lighten(#8ac943, 20))
+		);
+		background-size: 25px 20px, 100% 100%, 100% 100%;
+		@include animation(animate-stripes 3s linear infinite);
+	}
+
+	&[value] {
+		color: #8ac943;
+	}
+}
+
+/* fallback progress
+-------------------- */
+div.fallback.progress {
+	background-color: #f7f7f7;
+	width: 300px;
+	height: 20px;
+	overflow: hidden;
+
+	span.bar {
+		background-color: #8ac943;
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{lighten(#8ac943, 10)}", endColorstr="#8ac943");
+		display: block;
+		height: 100%;
+		width: 0%;
+	}
+}
+
+
+/* Complexity meter
+---------------------- */
+.complexity-meter {
+    @include clearfix;
+    overflow: visible;
+    height: sprite-icon-height(password-complexity-background);
+
+    & > * {
+        float: left;
+    }
+
+    span[data-bind] {
+        display: block;
+        margin-left: 1em;
+    }
+
+    progress {
+        @include border-radius(none);
+        width: sprite-icon-width(password-complexity-background);
+        height: sprite-icon-height(password-complexity-background);
+        margin: 0;
+
+        &::-webkit-progress-bar {
+            @include border-radius(0);
+            @include box-shadow(none);
+            background: #ccc;
+            height: sprite-icon-height(password-complexity-background);
+        }
+         &::-webkit-progress-value {
+            background: $color-green;
+            @include box-shadow(none);
+        }
+        &::-moz-progress-bar {
+            @include border-radius(0);
+            @include box-shadow(none);
+            background: $color-green;
+        }
+    }
+    
+     // fallback
+    div.fallback.progress {
+        height: sprite-icon-height(password-complexity-background);
+        width: sprite-icon-width(password-complexity-background);
+        margin: 0;
+    }
+
+    @include before-content {
+        @include sprite-icon(password-complexity-background);
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background: none\9;
+    }
+}
+
+/*
+      __                                             _                
+     / _| ___  _ __ _ __ ___    _ __ ___   __ _ _ __| | ___   _ _ __  
+    | |_ / _ \| '__| '_ ` _ \  | '_ ` _ \ / _` | '__| |/ / | | | '_ \ 
+    |  _| (_) | |  | | | | | | | | | | | | (_| | |  |   <| |_| | |_) |
+    |_|  \___/|_|  |_| |_| |_| |_| |_| |_|\__,_|_|  |_|\_\\__,_| .__/ 
+                                                               |_|    
+    Markup as table format
+ */
+.table-format {
+    display: table;
+    width: 100%;
+    margin: 1em 0;
+
+    & > * {
+        display: table-row;
+        width: 100%;
+
+        & > * {
+            padding-top: 0.5em;
+            display: table-cell;
+            vertical-align: middle;
+
+            &:first-child {
+                padding-right: 1em;
+                vertical-align: top;
+                width: 80px;
+
+                label {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+
+        &:first-child > * {
+            padding-top: 0;
+        }
+    }
+
+    // overwrite the margins of the dl + dd
+    dl { margin: 0.5em 0 0 0; }
+    dd { margin: 0; }
+    
+    // styles the labels
+    label {
+        display: inline-block;
+        padding: 0.8em;
+    }
+    
+    // for multiple input on one row
+    .input-big-small > * {
+        @include clearfix;
+        & > * {
+            @include box-sizing( border-box );
+            float: left;
+            width: 33.3%;
+
+            &:nth-child(1),
+            &:nth-child(3) {
+                width: 35%;
+            }
+            &:nth-child(2) {
+                width: 30%;
+            }
+        }
+
+        dt  {
+            min-width: 110px;
+            text-align: right;
+        }
+
+        &:first-child dt {
+            text-align: left;
+        }
+    }
+
+    // overwrite input elements
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"],
+    textarea {
+        margin: 0;
+        width: 100%;
+    }
+
+    small {
+        @include box-sizing( border-box );
+        display: block;
+        width: 100%;
+        margin: 0.3em 0 1em 0;
+    }
+
+    input[type="radio"] {
+        margin-right: 0.3em;
+    }
+}
+
+/*
+     ______           _              _    _____                     _____ _ _       _                         _ 
+    |  ____|         | |            | |  / ____|                   / ____| (_)     | |                       | |
+    | |__   _ __ ___ | |__   ___  __| | | |     ___  _ __  _   _  | |    | |_ _ __ | |__   ___   __ _ _ __ __| |
+    |  __| | '_ ` _ \| '_ \ / _ \/ _` | | |    / _ \| '_ \| | | | | |    | | | '_ \| '_ \ / _ \ / _` | '__/ _` |
+    | |____| | | | | | |_) |  __/ (_| | | |___| (_) | |_) | |_| | | |____| | | |_) | |_) | (_) | (_| | | | (_| |
+    |______|_| |_| |_|_.__/ \___|\__,_|  \_____\___/| .__/ \__, |  \_____|_|_| .__/|_.__/ \___/ \__,_|_|  \__,_|
+                                                    | |     __/ |            | |                                
+                                                    |_|    |___/             |_|                                
+ */
+embed[name=global-zeroclipboard-flash-bridge] {
+    cursor: pointer;
+}
+
+
+/*
+Radio list
+------------ */
+.radio-list {
+	display: table;
+	margin: 1em 0;
+	
+	dl {
+		display: table-row;
+		margin: 0;
+
+		& > * {
+			display: table-cell;
+			padding-left: 1em;
+			padding-top: 0.5em;
+
+			&:first-child {
+				padding-left: 0;
+			}
+		}
+	}
+}

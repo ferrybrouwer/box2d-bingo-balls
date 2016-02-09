@@ -1,0 +1,66 @@
+/*
+     _____        _                   _     _   _        _     _      
+    |  __ \      | |                 (_)   | | | |      | |   | |     
+    | |  | | __ _| |_ __ _  __ _ _ __ _  __| | | |_ __ _| |__ | | ___ 
+    | |  | |/ _` | __/ _` |/ _` | '__| |/ _` | | __/ _` | '_ \| |/ _ \
+    | |__| | (_| | || (_| | (_| | |  | | (_| | | || (_| | |_) | |  __/
+    |_____/ \__,_|\__\__,_|\__, |_|  |_|\__,_|  \__\__,_|_.__/|_|\___|
+                            __/ |                                     
+                           |___/                                      
+ */
+table.datagrid {
+    width: 100%;
+    border: 3px solid $color-grey-light;
+    background-color: #fff;
+    border-spacing: 20px 0px;
+    
+    th, td {
+        border-top: 1px solid $color-grey-light;
+        vertical-align: top;
+        padding: 0.5em 1.5em;
+        
+        // align texts
+        text-align: right;
+        &:first-child,
+        &:last-child {
+            text-align: left;
+        }
+    }
+    
+    // get rid of the border-top
+    & > tbody > tr:first-child td,
+    & > thead > tr:first-child th {
+         border-top: none;
+    }
+    
+    // style head and foot
+    thead th,
+    tfoot td {
+        font-weight: bold;
+        background-color: $color-grey;
+    }
+    
+    // add grey background to uneven cells
+    tbody:not(.sub-rows) tr:nth-child(odd) td {
+        background-color: $color-grey-light;
+    }
+    
+    // style sub-row cells
+    tbody.sub-rows td:first-child {
+        padding-left: 4em;
+
+        @include before-content {
+            content: '-';
+            position: static;
+            display: inline-block;
+            margin-right: 1em;
+            height: 100%;
+        }
+        position: static;
+    }
+    
+    // remove button margins
+    a.button {
+        margin: 0;
+    }
+}

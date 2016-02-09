@@ -1,0 +1,318 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{{title}}</title>
+        <meta name="description" content="{{description}}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="js/vendor/modernizr/modernizr.js"></script>
+        <script src="js/vendor/detectizr/dist/detectizr.min.js"></script>
+    </head>
+    
+    <body class="logged-in register">
+
+        <div id="main" role="main">
+
+            <section class="bingo notificationbar" id="notificationbar" data-bind="scrollToThis: $root.bingoModel.is_draw">
+                <div class="wrapper" data-bind="bingoNotifyChanges: {text: $root.bingoModel.notification_message, duration: 5000}">
+                    <span>--- Je huidige saldo: 12008 punten!  ---</span>
+                </div>
+            </section>
+
+            <section data-bind="attr: {'data-bingodraw': $root.bingoModel.is_draw.toString()}" class="bingo blue-banner">
+                
+                <!-- Preload sounds -->
+                <section data-view="bingo-preload">
+                    <header>
+                        <hgroup>
+                            <h1 class="big">De trekking wordt geladen</h1>
+                            <h2>Een ogenblik geduld a.u.b...</h2>
+                        </hgroup>
+                    </header>
+                    <div class="progress-container">
+                        <progress data-bind="value: $root.progressModel.progress" id="preload_process" max="100" value="0"></progress>
+                        <span class="progress-percentage" data-bind="text: Math.round($root.progressModel.progress()), style: {right: (100 - $root.progressModel.progress()).toString() + '%'}">0</span>
+                    </div>
+                </section>
+
+                <!-- Bingo intro -->
+                <section data-view="bingo-intro">
+                    <header><h1 class="big">De ballen staan klaar... de prijzen staan klaar...</h1></header>
+                    <a href="#" class="button" data-bind="click: function(){ $root.bingoModel.showView('bingo-cards'); $root.notificationModel.showNotification('')}">START!</a>
+                </section>
+
+                <!-- Bingo cards -->
+                <section id="bingoDrawCards" data-view="bingo-cards" class="cards" data-bind="
+                    foreach: $root.bingoModel.cards,
+                    bingoComplete: function(){
+                        $root.formModel.get('/api/confirmBingo');
+                    },
+                    windowVisibilityChange: {
+                        hidden: $root.bingoModel.pause,
+                        visible: $root.bingoModel.resume
+                    }
+                ">
+                    <article class="card" data-bind="showCard: $root.bingoModel.current_view() === 'bingo-cards', style: {'backgroundColor': color}, attr: { 'data-claimed': claimed().toString(), 'data-disabled': disabled().toString() }">
+                        <header data-bind="style: {'color': color}">
+                            <h2 data-bind="text: day"></h2>
+                        </header>
+                        <div class="card-labels" data-bind="foreach: labels">
+                           <span class="label-item" data-bind="visible: $parent.showLabels">
+                               <span data-bind="text: $data"></span>
+                               <div class="ball" data-bind="visibleBall: $parent.isStrikedLabel($data), style: {'background-color': $parent.getLabelColor($data)}">
+                                   <span data-bind="text: $data"></span>
+                               </div>
+                           </span>
+                        </div>
+                        <div data-bind="visibleBingo: bingo" class="bingo-asset"></div>
+                    </article>
+                </section>
+
+                <!-- Bingo outro -->
+                <section data-view="bingo-outro">
+                    <header>
+                        <hgroup>
+                            <h1 class="big">Alsjeblieft!</h1>
+                            <h2>
+                                Bekijk je prijzen en voordelen <br/>
+                                in je prijzenoverzicht of in je mailbox.
+                            </h2>
+                        </hgroup>
+                    </header>
+                </section>
+                
+                <!-- ko if: !(Modernizr.csstransforms3d && Modernizr.canvas) || (_.has(app.model.bingo, 'forceFlash') && app.model.bingo.forceFlash === true) -->
+                <div style="display: none;" id="flashBingoDraw"></div>
+                <!-- /ko -->
+
+                <!-- Bingo bowl balls -->
+                <section class="bowl-balls">
+                    <div id="box2dBallContainer" class="ball-container"></div>
+                    <canvas class="bowl" data-bind="visibleBowl: $root.bingoModel.show_bowl"></canvas>
+                </section>
+                
+                <img id="bluebannerBottomWhite" src="images/blue-banner-background.png" alt="">
+            </section><!-- .bingo.blue-banner -->
+            <script type="text/template" id="box2d_ball">
+                <div class="ball" style="background-color: <%= color %>">
+                    <span><%= label %></span>
+                </div>
+            </script>
+
+        </div><!-- #main -->
+
+        <script>
+            // create namespace filled with dummy data
+            window.app = {
+                ui: {},
+                model: {
+                    koClasses: {},
+                    koModels: {},
+                    trackEvent: {
+                        category: '',
+                        action: ''
+                    },
+                    paths: {
+                        javascripts: 'js/',
+                        images: 'images/',
+                        flash: 'flash/'
+                    },
+                    settings: {
+                        cents_per_point: 0.25,
+                        points_per_ball: 100,
+                        controller: '',
+                        action: ''
+                    },
+                    user: {
+                        name: 'Ferry Brouwer',
+                        email: 'ferry.brouwer@gmail.com',
+                        address: 'Laan 2',
+                        postal: '0000 AA',
+                        city: 'Eindhoven',
+                        phone: '0612345678',
+                        mobile: '0612345678',
+                        account_number: 'NL73RABO0148449190',
+                        account_bankname: 'ING',
+                        account_recipient: 'F.G. Brouwer',
+                        account_bankcity: 'Eindhoven',
+                        facebook_id: '',
+                        facebook_username: 'ferry',
+                        facebook_email: 'ferry.brouwer@gmail.com',
+                        balance: 1000
+                    },
+                    bingo: {
+                        forceFlash: false,
+                        sounds: {
+                            enabled: true,
+                            balls: {
+                                1: 'sounds/numbers/1.mp3',
+                                2: 'sounds/numbers/2.mp3',
+                                3: 'sounds/numbers/3.mp3',
+                                4: 'sounds/numbers/4.mp3',
+                                5: 'sounds/numbers/5.mp3',
+                                6: 'sounds/numbers/6.mp3',
+                                7: 'sounds/numbers/7.mp3',
+                                8: 'sounds/numbers/8.mp3',
+                                9: 'sounds/numbers/9.mp3',
+                                10: 'sounds/numbers/10.mp3',
+                                21: 'sounds/numbers/21.mp3',
+                                12: 'sounds/numbers/12.mp3'
+                            },
+                            intro: 'sounds/intro.mp3',
+                            bingo: ['sounds/bingo.mp3'],
+                            match: [
+                                'sounds/yess.mp3',
+                                'sounds/raak.mp3'
+                            ],
+                            outro: 'sounds/gefeliciteerd.mp3'
+                        },
+                        alreadyViewed: false,
+                        bingodraw: true,
+                        balls: ['5', '9', '10', '21', '3', '6', '12', '7', '8', '2', '4', '1'],
+                        cards: [
+                            {
+                                labels: ['31', '32', '33', '34', '35', '36', '37', '38', '39'],
+                                claimed: false,
+                                disabled: false
+                            },
+                            {
+                                labels: ['45', '42', '3', '42', '45', '41', '41', '42', '45'],
+                                claimed: true,
+                                disabled: false
+                            },
+                            {
+                                labels: ['12', '1', '2', '3', '4', '5', '6', '7', '8'],
+                                claimed: true,
+                                disabled: false
+                            },
+                            {
+                                labels: ['61', '62', '63', '64', '65', '66', '67', '68', '69'],
+                                claimed: true,
+                                disabled: false
+                            },
+                            {
+                                labels: ['1', '29', '8', '1', '25', '9', '31', '23', '5'],
+                                claimed: true,
+                                disabled: true
+                            }
+                        ]
+                    }
+                }
+            };
+        </script>
+
+
+        <script src="js/happy/util/Console.js"></script>
+        <script src="js/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="js/vendor/jquery-easing-original/jquery.easing.min.js"></script>
+        <script src="js/vendor/jquery.complexify.js/jquery.complexify.js"></script>
+        <script src="js/vendor/jquery.complexify.js/jquery.complexify.banlist.js"></script>
+        <script src="js/vendor/jquery-zclip/jquery.zclip.js"></script>
+        <script src="js/vendor/greensock/src/minified/TweenLite.min.js"></script>
+        <script src="js/vendor/greensock/src/minified/easing/EasePack.min.js"></script>
+        <script src="js/vendor/greensock/src/minified/plugins/ScrollToPlugin.min.js"></script>
+        <script src="js/vendor/greensock/src/minified/plugins/CSSPlugin.min.js"></script>
+        <script src="js/vendor/underscore/underscore.js"></script>
+        <script src="js/vendor/knockout.js/knockout.js"></script>
+        <script src="js/vendor/PreloadJS/lib/preloadjs-0.6.2.combined.js"></script>
+        <script src="js/vendor/SoundJS/lib/soundjs-0.6.2.combined.js"></script>
+        <script src="js/vendor/swfobject/swfobject/swfobject.js"></script>
+        <script src="js/vendor/html5shiv/dist/html5shiv.js"></script>
+        <script src="js/vendor/json2/json2.js"></script>
+        <script src="js/vendor/selectivizr-new/selectivizr.js"></script>
+        <script src="js/vendor/soundmanager2/script/soundmanager2-jsmin.js"></script>
+        <script src="js/vendor/requestAnimationFrame-polyfill/requestAnimationFrame.js"></script>
+        <script src="js/vendor/yepnope/yepnope.js"></script>
+        <script src="js/happy/util/KoCustomBindings.js"></script>
+        <script src="js/happy/util/KoCustomFunctions.js"></script>
+        <script src="js/happy/util/KoCustomExtenders.js"></script>
+        <script src="js/happy/util/jquery.columnresizer.js"></script>
+        <script src="js/happy/util/underscore.mixins.js"></script>
+        <script src="js/happy/ui/form.elements.js"></script>
+        <script src="js/happy/ui/Overlay.js"></script>
+        <script src="js/happy/ui/jquery.loader.js"></script>
+        <script src="js/happy/ui/jquery.progress.js"></script>
+        <script src="js/happy/ui/bingo/BingoSounds.js"></script>
+        <script src="js/happy/model/KoUserModel.js"></script>
+        <script src="js/happy/model/KoPopupModel.js"></script>
+        <script src="js/happy/model/KoFormModel.js"></script>
+        <script src="js/happy/model/KoVzaarModel.js"></script>
+        <script src="js/happy/model/KoRedeemModel.js"></script>
+        <script src="js/happy/model/KoProgressModel.js"></script>
+        <script src="js/happy/model/KoPaymentRequestModel.js"></script>
+        <script src="js/happy/model/KoNotificationModel.js"></script>
+        <script src="js/happy/model/KoTrackEventModel.js"></script>
+        <script src="js/happy/model/bingo/KoBingoFlashModel.js"></script>
+        <script src="js/happy/model/bingo/KoBingoModel.js"></script>
+        <script src="js/happy/model/bingo/KoBingoCardModel.js"></script>
+
+        <!-- load dependencies on capabilities -->
+        <script>
+            yepnope({
+                test : Modernizr.csstransforms3d && Modernizr.canvas,
+                yep  : [
+                    'js/vendor/box2dweb/Box2dWeb-2.1.a.3.js',
+                    'js/vendor/easeljs/lib/easeljs-0.8.2.combined.js',
+                    'js/happy/ui/bingo/CanvasBowl.js',
+                    'js/happy/ui/bingo/box2d.props/World.js',
+                    'js/happy/ui/bingo/box2d.props/Ground.js',
+                    'js/happy/ui/bingo/box2d.props/Ball.js',
+                    'js/happy/ui/bingo/Box2dBowl.js',
+                    'js/happy/app.js'
+                ],
+                nope : 'js/happy/app.js'
+            });
+        </script>
+
+        <!-- global templates -->
+        <script type="text/template" class="popup" id="terms_and_conditions">
+            <header>
+                <h1>Algemene voorwaarden</h1>
+            </header>
+
+            <h2>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh</h2>
+            <p>
+                Curabitur blandit tempus porttitor. Nulla vitae elit libero, a pharetra augue.
+                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
+                ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Aenean eu leo quam. Pellentesque ornare sem
+                lacinia quam venenatis vestibulum. Praesent commodo cursus magna,
+                vel scelerisque nisl consectetur et.
+            </p>
+
+            <h2>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh</h2>
+            <p>
+                Curabitur blandit tempus porttitor. Nulla vitae elit libero, a pharetra augue.
+                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
+                ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Aenean eu leo quam. Pellentesque ornare sem
+                lacinia quam venenatis vestibulum. Praesent commodo cursus magna,
+                vel scelerisque nisl consectetur et.
+            </p>
+
+            <h2>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh</h2>
+            <p>
+                Curabitur blandit tempus porttitor. Nulla vitae elit libero, a pharetra augue.
+                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
+                ut fermentum massa justo sit amet risus. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Aenean eu leo quam. Pellentesque ornare sem
+                lacinia quam venenatis vestibulum. Praesent commodo cursus magna,
+                vel scelerisque nisl consectetur et.
+            </p>
+        </script>
+        <script type="text/template" id="popup_conversion">
+            <header>
+                <h1><%= title %></h1>
+            </header>
+            <p><%= content %></p>
+        </script>
+    </body>
+</html>

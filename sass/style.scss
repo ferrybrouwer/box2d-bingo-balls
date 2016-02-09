@@ -1,0 +1,43 @@
+@import "_normalize";
+@import "base";
+@import "_global";
+@import "_header";
+@import "_footer";
+@import "_form";
+@import "fonts/_open-sans";
+@import "fonts/_signika";
+@import "_overlay";
+@import "_popups";
+@import "_bingo";
+@import "_page";
+@import "_lid-page";
+@import "_vzaarvideo";
+@import "_table-datagrid";
+@import "_scale_bingoball_in";
+@import "_block";
+@import "_faq";
+
+body {
+    background-color: #fff;
+	color: $color-text;
+	font-family: 'Open Sans';
+	font-size: $baseline;
+	line-height: 1.5em;
+}
+
+/**
+ * Labels
+ * Example on page redeem price
+ */
+.label {
+	background-color: #ff0066;
+	@include emailbingo-color(background-color);
+	@include box-sizing( border-box );
+	display: inline-block;
+	color: #fff;
+	padding: 0.5em 1em;
+	text-transform: uppercase;
+	font-size: 2.2em;
+	font-family: 'Signika';
+	line-height: 1em;
+}

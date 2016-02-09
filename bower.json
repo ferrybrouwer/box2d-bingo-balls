@@ -1,0 +1,32 @@
+{
+    "name": "emailbingo-javascripts",
+    "version": "0.0.1",
+    "homepage": "https://github.com/HappyOnline/emailbingo.nl",
+    "authors": [
+        "Ferry Brouwer <ferry@happy-online.nl>"
+    ],
+    "description": "Contains all vendor scripts",
+    "private": true,
+    "dependencies": {
+        "easeljs": "*",
+        "html5shiv": "~3.7.0",
+        "jquery": "~1.11.0",
+        "jquery.complexify.js": "*",
+        "jquery-easing-original": "~1.3.1",
+        "jquery-zclip": "~1.1.4",
+        "json2": "*",
+        "modernizr": "2.7.1",
+        "PreloadJS": "*",
+        "underscore": "~1.6.0",
+        "greensock": "~1.11.6",
+        "knockout.js": "~3.0.0",
+        "box2dweb": "*",
+        "selectivizr-new": "~1.0.3",
+        "swfobject": "2.2",
+        "soundmanager2": "*",
+        "detectizr": "~2.0.0",
+        "requestAnimationFrame-polyfill": "*",
+        "yepnope": "~1.*",
+        "SoundJS": "*"
+    }
+}

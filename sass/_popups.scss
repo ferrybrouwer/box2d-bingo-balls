@@ -1,0 +1,265 @@
+/**********************************************
+	 ____                             
+	|  _ \ ___  _ __  _   _ _ __  ___ 
+	| |_) / _ \| '_ \| | | | '_ \/ __|
+	|  __/ (_) | |_) | |_| | |_) \__ \
+	|_|   \___/| .__/ \__,_| .__/|___/
+	           |_|         |_|        
+
+**********************************************/
+
+/**
+ * General popups
+ */
+div.popup-content {
+	@include transition(all 300ms ease-out);
+
+	// buttons and inputs all block elements
+	a.button,
+	button, 
+	input[type="text"], 
+	input[type="password"] {
+		display: block;
+		min-width: 220px;
+	}
+	
+	// get rid of the margin-bottom attached on the last element
+	& > *:last-child {
+		margin-bottom: 0;
+	}
+
+	// set input to 100% width
+	input[type="text"], 
+	input[type="password"],
+	input[type="email"] {
+		width: 100%;
+	}
+	
+	// ..of.. delimiter
+	span.delimiter {
+		font-family: 'Open Sans';
+		display: block;
+		margin: 1.4em 0;
+		font-size: 1.3em;
+	}
+}
+
+/**
+ * Login popup
+ */
+div.popup-content.popup_login {
+	form button {
+		margin-bottom: 1.5em;
+	}
+}
+
+/**
+ * Join for free popup
+ */
+div.popup-content.popup_joinforfree {
+	& > *:last-child {
+		margin: 0;
+	}
+
+	a.button {
+		display: inline-block;
+	}
+}
+
+/**
+ * Terms and conditions popup
+ */
+div.popup-content.terms_and_conditions {
+	width: 500px;
+}
+
+/**
+ * Change password
+ */
+div.popup-content.popup_changepassword {
+	width: 400px;
+}
+
+/**
+ * Payment information
+ */
+div.popup-content.popup_payment_info {
+	width: 700px;
+	
+	// IE fix, selectivizr isn't enabled on dynammic generated elements
+	// here the popup generate the table.datagrid, which contains the nth-child pseudo selector
+	table.datagrid tr > * {
+		text-align: left\9;
+	}
+}
+
+/**
+ * Payment request
+ */
+div.popup-content.popup_payment_request {
+	width: 430px;
+
+	a {
+		display: block;
+		margin: 1em 0;
+	}
+
+	.table-format {
+		margin-top: 2em;
+
+		dl dt {		
+			padding-right: 3em;
+		}
+
+		&.amount {
+			dl dd {
+				@include before-content {
+					content: '\20AC';
+					display: inline-block;
+					padding: 0.8em 0;
+					margin-left: -1.3em;
+				}
+			}
+			dl dt {
+				width: 70px;
+				padding-right: 1em;
+			}
+		}
+	}
+}
+
+/**
+ * Change bank details
+ */
+div.popup-content.popup_bank_details_edit {
+	width: 450px;
+	
+	.table-format {
+		margin: 2em 0;
+	}
+}
+
+/**
+ * Youtube video popup
+ */
+div.popup-content[class*='youtube_video'] {
+	width: 800px;
+}
+
+
+/**
+ * Welcome popup registered user
+ * Unsubscribe popup
+ */
+div.popup-content[class*='user_registered_welcome_popup'],
+div.popup-content[class*='user_unregister_popup'] {
+    width: 490px;
+}
+
+/**
+ * Shop information popup
+ */
+div.popup-content[class*='shop_information'] {
+	width: 700px;
+	padding: 0;
+	overflow: hidden;
+
+	.store-info {
+		margin: 1em;
+
+		// affiliate logo
+		.affiliate-logo {
+			width: 123px;
+
+			.affiliate-logo-container {
+				@include box-sizing(border-box);
+				display: block;
+				width: 100%;
+				background-color: #fff;
+				border: 1px solid #999 !important;
+				padding: 0.5em 0;
+
+				img {
+					max-width: 100%;
+					display: block;
+					margin: 0 auto;
+				}
+			}
+		}
+
+		// store-title
+		.store-title {
+			@include box-sizing(border-box);
+			padding: 0 0 0.3em 0;
+			display: block;
+			width: 100%;
+
+			h2 {
+				margin: 0;
+			}
+		}
+
+		// store content
+		.store-content {
+			@include remove-margins-descending-elements;
+		}
+	}
+
+	// button
+	a.button {
+		display: inline-block;
+		margin-top: 1em;
+	}
+
+	// store bingo points
+	.store-points {
+		ul, li {
+			@include reset-list-style;
+			margin: 0;
+			padding: 0;
+		}
+
+		.store-points-title, li {
+			background-color: $color-grey-light;
+			padding: 0.8em 2em;
+			margin-top: 1px;
+			width: 100%;
+			display: block;
+		}
+
+		.store-points-title {
+			@include box-sizing(border-box);
+			margin: 0;
+			font-size: 1.3em;
+			font-family: 'Open Sans Semibold';
+			padding-left: 1.5em;
+
+			h3 {
+				margin: 0;
+			}
+		}
+	}
+
+	.store-icons {
+		background-color: $color-blue;
+		padding: 1em;
+		color: #fff;
+		margin-top: 2px;
+		display: block;
+		width: 100%;
+
+		ul, li {
+			@include reset-list-style;
+		}
+
+		ul {
+			margin: 0;
+			padding-left: 1em;
+		}
+
+		li:before {
+			margin-right: 1em;
+			font-size: 1.3em;
+		}
+	}
+}

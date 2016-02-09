@@ -1,0 +1,23 @@
+{
+  "name": "emailbingo",
+  "version": "1.0.0",
+  "description": "Sass watch with live reload",
+  "scripts": {
+    "postinstall": "npm install -g bower && npm install -g grunt-cli && npm install -g grunt && bower install"
+  },
+  "author": "Happy Online",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-compass": "^1.0.1",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.6.0",
+    "grunt-contrib-imagemin": "^0.8.1",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^0.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HappyOnline/emailbingo.nl.git"
+  }
+}

@@ -1,0 +1,116 @@
+/********************************************************************************
+	  ___                 _                _     
+	 / _ \__   _____ _ __| | __ _ _   _   (_)___ 
+	| | | \ \ / / _ \ '__| |/ _` | | | |  | / __|
+	| |_| |\ V /  __/ |  | | (_| | |_| |_ | \__ \
+	 \___/  \_/ \___|_|  |_|\__,_|\__, (_)/ |___/
+	                              |___/ |__/     
+
+********************************************************************************/
+
+html.overlay-ready #main,
+html body > header,
+html body > footer,
+.overlay-background,
+.overlay-content {
+	@include prefix-property('transform-origin', 50% 50%);
+	@include prefix-property('transition-duration', 200ms);
+	@include prefix-property('transition-timing-function', cubic-bezier(0.250, 0.460, 0.450, 0.940));
+	@each $prefix in $prefixes {
+		#{$prefix}transition-property: opacity, #{$prefix}transform;
+	}
+}
+html.overlay-active body > header,
+html.overlay-active body > footer,
+html.overlay-active #main {
+	@include transform( scale(0.92) );
+}
+.overlay-background {
+	@include opacity(0);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 999999;
+	pointer-events: none;
+	background: rgba( 0, 0, 0, 0.8 );
+}
+.overlay-content {
+	@include transform( scale(0.8) );
+	@include opacity(0);
+	position:absolute;
+	z-index:9999999;
+	pointer-events: none;
+	top:50%;
+	left:50%;
+}
+html.overlay-active .overlay-background {
+	pointer-events: auto;
+}
+html.overlay-active .overlay-content {
+	@include transform( scale(1) );
+	@include opacity(1);
+	visibility: visible;
+	pointer-events: auto;
+}
+html.overlay-active body > header,
+html.overlay-active body > footer,
+html.overlay-active #main {
+	@include prefix-property('filter', blur(1px));
+}
+html.overlay-active .overlay-background {
+	@include opacity(1);
+}
+a.button.overlay-close {
+	@include border-radius( 50% );
+	@include box-shadow(3px -3px 8px rgba(0, 0, 0, .2));
+	display: block;
+	margin: 0;
+	background: #fff;
+	filter: none;
+	border: none;
+	padding: 0;
+	width: 31px;
+	height: 31px;
+	top: -15px;
+	right: -15px;
+
+	
+	@include before-content {
+		@include border-radius( 50% );
+		background-color: #000;
+		width: 25px;
+		height: 25px;
+		left: 3px;
+		top: 3px;
+	}
+
+	@include after-content {
+		content: 'X';
+		font-family: 'Open Sans';
+		font-weight: 700;
+		font-size: 0.8em;
+		color: #fff;
+		width: 100%;
+		text-align: center;
+	}
+
+	// overwrite position
+	position: absolute;
+
+	&:hover:before {
+		background-color: #484646;
+	}
+}
+div.popup-content {
+	@include box-shadow( 1px 1px 20px rgba(0, 0, 0, .4) );
+	@include box-sizing( border-box );
+	width: 350px;
+	background-color: #fff;
+	padding: 30px;
+
+	header h1 {
+		margin-top: 0!important;
+	}
+}

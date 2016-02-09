@@ -1,0 +1,251 @@
+// @import "compass/reset";
+@import "compass/utilities";
+@import "compass/css3";
+@import "_sprite.scss";
+
+
+/***************************************************************
+	 ____                 
+	| __ )  __ _ ___  ___ 
+	|  _ \ / _` / __|/ _ \
+	| |_) | (_| \__ \  __/
+	|____/ \__,_|___/\___|
+					  
+	@author : Ferry Brouwer
+	This template contains all global variables, mixins, function etc.
+
+/***************************************************************/
+
+/* prefixes for different browsers */
+$prefixes : '-webkit-', '-moz-', '-ms-', '-o-', '';
+
+/* colors */
+$color-text			: #333;
+$color-red			: #e95f56;
+$color-grey 		: #e9e9e9;
+$color-grey-light	: #f4f4f4;
+$color-grey-border 	: #ccc;
+
+$color-orange 		: #ec7503;
+$color-green 		: #bdcd00;
+$color-blue 		: #01b1e4;
+$color-pink 		: #ec7bab;
+$color-yellow 		: #f9b200;
+$color-purple 		: #9d6ca8;
+$color-gold 		: #bc9436;
+
+$color-yellow-light : #ffff00;
+
+$colors : 'green', 'pink', 'red', 'yellow', 'orange', 'blue', 'purple';
+$color-hexs : $color-green, $color-pink, $color-red, $color-yellow, $color-orange, $color-blue, $color-purple;
+$emailbingo-colors : zip($colors, $color-hexs);
+
+$margin : 15px;
+
+/* font-sizes */
+$baseline	: 0.75em;
+$heading-1	: 2.1em;
+$heading-2	: 1.3em;
+$heading-3	: 1.2em;
+
+/**
+ * Get column width percentage
+ *
+ * @param {int} $number-column
+ * @return {percentage}
+ */
+@function column-width-percentage( $number-column ) {
+	@if ( type-of($number-column) == 'number' ){
+		@return 100%/$number-column;
+	}
+}
+
+/**
+ * attach [data-color=#{$colors}] elements with given property color
+ * 
+ * @param {string} $property [css property]
+ * @example: @include emailbingo-color(background-color){color:red}
+ */
+@mixin emailbingo-color( $property ) {
+	@each $emailbingo-color in $emailbingo-colors {
+		&[data-color="#{nth($emailbingo-color, 1)}"] {
+			#{$property} : nth($emailbingo-color, 2);
+			@content;
+		}
+	}
+}
+
+/**
+ * Prefix property
+ * @note: 	normal use the mixins of the compass core
+ * 			for example: @include transition(background-color 1s ease-out);
+ * 			Use this mixin only when there is no prefixed core method
+ * 
+ * @param {string} $property
+ * @param {string} $value
+ */
+@mixin prefix-property( $property, $value ) {
+	@each $prefix in $prefixes {
+		#{$prefix}#{$property}: $value;
+	}
+}
+
+/**
+ * Calculate given px to em
+ *
+ * @param {number} $px
+ * @return {number}
+ */
+@function px-to-em( $px ) {
+	@if ( type-of($px) == 'number' ){
+		@return #{$px / (0.75 * 16)}em;
+	}
+}
+
+/**
+ * Strip units of given value
+ * 
+ * @param {number with unit} $value
+ * @return {number without unit}
+ */
+@function strip-units($number) {
+	@return $number / ($number * 0 + 1);
+}
+
+/**
+ * Remove margins from descending first and last child
+ * @type mixin
+ */
+@mixin remove-margins-descending-elements {
+	& > *:first-child,
+	& > *:first-child > *:first-child {
+		margin-top: 0;
+	}
+	& > *:last-child,
+	& > *:last-child > *:last-child {
+		margin-bottom: 0;
+	}
+}
+
+/**
+ * Print before content
+ */
+@mixin before-content {
+	position: relative;
+	
+	&:before {
+		content: '';
+		display: block;
+		position: absolute;
+		@content;
+	}
+}
+
+/**
+ * Print after content
+ */
+@mixin after-content {
+	position: relative;
+	
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		@content;
+	}
+}
+
+/**
+ * Keyframe animation with prefix vendors 
+ * 
+ * @param {string} $name
+ */
+@mixin keyframes( $name ) {
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+  	@-ms-keyframes #{$name} {
+		@content;
+	}
+  	@keyframes #{$name} {
+		@content;
+	}
+}
+
+/**
+ * Render element by GPU
+ */
+@mixin gpu-element() {
+	@include transform-style(preserve-3d);
+	@include perspective(400);
+	@include backface-visibility(hidden);
+	@include transform(rotateY(0));
+}
+
+/**
+ * CSS3 Animation mixin
+ * 
+ * @param {string} $value
+ */
+@mixin animation( $value ) {
+	@include prefix-property(animation, $value);
+}
+
+/**
+ * Generate gradient background
+ * 
+ * @param {hexadecimal} $background-colors
+ * @param {hexadecimal}	$text-color
+ * @param {boolean}	$smooth
+ */
+@mixin gradient-background( $background-color:$color-orange, $text-color:#fff, $smooth:true ){
+	@include background-clip( padding-box );
+	background-color: $background-color;
+	color: $text-color;
+
+	@if $smooth {
+		@include background-image(linear-gradient(bottom, $background-color 0%, lighten($background-color, 10) 100%));
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{lighten($background-color, 10)}", endColorstr="#{$background-color}");
+	}@else{
+		@include background-image(linear-gradient(bottom, $background-color 50%, lighten($background-color, 10) 50%));
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{lighten($background-color, 10)}", endColorstr="#{$background-color}");
+	}
+}
+
+/**
+ * Clearfix after element
+ */
+@mixin clearfix-after {
+    &:after {
+        content: ' ';
+        display: table;
+        clear: both;
+        *zoom: 1;
+    }
+}
+
+/**
+ * Clearfix before element
+ */
+@mixin clearfix-before {
+    &:before {
+        content: ' ';
+        display: table;
+        clear: both;
+        *zoom: 1;
+    }
+}
+
+/**
+ * Placeholder styling for input elements
+ */
+@mixin input-placeholder {
+	&.placeholder { @content }
+	&:-moz-placeholder { @content }
+	&::-webkit-input-placeholder { @content }
+	&::-moz-placeholder { @content }
+	&:-ms-input-placeholder { @content }
+}

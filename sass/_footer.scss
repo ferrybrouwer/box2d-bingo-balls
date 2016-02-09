@@ -1,0 +1,140 @@
+/*
+	 ____                                       
+	/ ___| _ __   ___  _ __  ___  ___  _ __ ___ 
+	\___ \| '_ \ / _ \| '_ \/ __|/ _ \| '__/ __|
+	 ___) | |_) | (_) | | | \__ \ (_) | |  \__ \
+	|____/| .__/ \___/|_| |_|___/\___/|_|  |___/
+	      |_|                                   
+	
+	at the top of the footer
+ */
+section.sponsors {
+	@extend %grey-section-block;
+	border-bottom: 12px solid #e9e9e9;
+
+	ul {
+		display: table;
+		list-style: none;
+		width: 100%;
+		padding: 0;
+
+		li {
+			list-style: none;
+			display: table-cell;
+			padding: $margin;
+			width: column-width-percentage(5);
+			text-align: center;
+			vertical-align: middle;
+
+			img {
+				max-width: 166px;
+				display: inline-block;
+			}
+		}
+	}
+}
+
+/**
+ * When page is register
+ * get rid of the default margin-top of the sponsor section
+ */
+body.register section.sponsors {
+	margin-top: 0;
+}
+
+
+/*
+	 ____             _       _                      _ _       
+	/ ___|  ___   ___(_) __ _| |  _ __ ___   ___  __| (_) __ _ 
+	\___ \ / _ \ / __| |/ _` | | | '_ ` _ \ / _ \/ _` | |/ _` |
+	 ___) | (_) | (__| | (_| | | | | | | | |  __/ (_| | | (_| |
+	|____/ \___/ \___|_|\__,_|_| |_| |_| |_|\___|\__,_|_|\__,_|
+	                                                           
+	Facebook like and twitter
+ */
+section.social {
+	@include box-sizing( border-box );
+	background-color: $color-blue;
+	min-width: 980px;
+	font-weight: bold;
+	color: #fff;
+	padding: $margin 0;
+	text-align: center;
+	
+	.wrapper {
+		@include clearfix;
+		margin: 0 auto;
+		width: auto;
+		display: inline-block;
+
+		& > * {
+			float: left;
+			display: block;
+		}
+
+		.addthis_toolbox {
+			margin: 0 0 0 1em;
+			max-height: 20px;
+			overflow: hidden;
+		}
+	}
+
+	a {
+		color: #fff;
+	}
+}
+
+
+/*
+	 ____             _      _     _            _    
+	|  _ \  __ _ _ __| | __ | |__ | | ___   ___| | __
+	| | | |/ _` | '__| |/ / | '_ \| |/ _ \ / __| |/ /
+	| |_| | (_| | |  |   <  | |_) | | (_) | (__|   < 
+	|____/ \__,_|_|  |_|\_\ |_.__/|_|\___/ \___|_|\_\
+	                                                 
+	at the bottom of the footer
+ */
+aside.dark-footer {
+	min-height: 150px;
+	background-color: #363636;
+	border-top: 12px solid #000;
+	min-width: 980px;
+
+	.wrapper {
+		@include box-sizing( border-box );
+		padding: $margin 0;
+		color: #fff;
+
+		a {
+			color: $color-grey-border;
+			&:hover {
+				color: #fff;
+			}
+		}
+
+		nav ul {
+			@include clearfix;
+			list-style: none;
+			padding: 0;
+			margin: 0 (sprite-icon-width(footer-logo) + 20) 1em 0;
+
+			li {
+				@include box-sizing( border-box );
+				list-style: none;
+				float: left;
+				margin-left: $margin;
+
+				&:first-child {
+					margin-left: 0;
+				}
+
+			}
+		}
+
+		@include after-content {
+			@include sprite-icon(footer-logo);
+			top: $margin;
+			right: 0;
+		}
+	}
+}

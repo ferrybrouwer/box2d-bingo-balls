@@ -1,0 +1,76 @@
+/**
+ * Block
+ *
+ * @type component
+ * @author Ferry Brouwer <ferry@happy-online.nl>
+ */
+
+/*
+Normal grey border-block
+------------------------ */
+.grey-border-block {
+	border: 3px solid #F4F4F4;
+	background-color: #fff;
+	padding: 15px;
+
+	/*
+	Articles inside a border block should have a
+	specified distance to eachother
+	-------------------------------------------- */
+	article {
+		margin-top: 3em;
+
+		&:first-of-type,
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+}
+
+
+/*
+When there's an article inside the
+article.page overwrite the heading font
+---------------------------------------- */
+article.page article header h2 {
+	font-family: 'Open Sans';
+	font-weight: bold;
+	font-size: 1.5em;
+	margin: 1.2em 0 0.5em 0;
+	line-height: 1.3em;
+	margin-top: 0;
+}
+
+
+/*
+blocks container (blue and grey)
+Containing block articles in a 2 column layout
+--------------------------------------------------------- */
+%column-2-blocks-container {
+	@include clearfix;
+
+	article {
+		@include box-sizing(border-box);
+		width: column-width-percentage(2);
+		background-color: $color-grey-light;
+		border-left: 2px solid #fff;
+		border-bottom: 2px solid #fff;
+		float: left;
+		padding: 1em;
+
+		&:nth-child(odd) {
+			border-left: 0;
+		}
+	}
+}
+section.grey-blocks,
+section.blue-blocks,
+section.red-blocks {
+	@extend %column-2-blocks-container;
+}
+section.blue-blocks article {
+	background-color: lighten($color-blue, 49);
+}
+section.red-blocks article {
+	background-color: lighten($color-red, 34);
+}

@@ -1,0 +1,165 @@
+/**
+ * Print sprite background
+ * Retina compatible
+ * 
+ * @param {sprite-file} $sprite 
+ * @param {sprite-map} $map
+ * @param {sprite-map} $map-retina [optional]
+ * @param {number} $percentage [default 100]
+ */
+@mixin background-sprite($sprite, $map, $map-2x:null, $percentage:100) {
+    background-image: sprite-url($map);
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: block;
+
+	$divide: 100/$percentage;
+    $map-width: floor( image-width(sprite-path($map)) * ($percentage/100) );
+    $map-height: floor( image-height(sprite-path($map)) * ($percentage/100) );
+
+    background-size: $map-width $map-height;
+	background-position: floor(nth(sprite-position($map, $sprite), 1) / $divide) floor(nth(sprite-position($map, $sprite), 2) / $divide);
+    width: sprite-width($sprite, $map, $percentage);
+    height: sprite-height($sprite, $map, $percentage);
+
+    @if $map-2x {
+    	@media (-webkit-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 2) {
+	       $divide : $divide * 2;
+    		background-image: sprite-url($map-2x);
+	        background-size: floor(image-width(sprite-path($map-2x)) / $divide) floor(image-height(sprite-path($map-2x)) / $divide);
+	        background-position: floor(nth(sprite-position($map-2x, $sprite), 1) / $divide) floor(nth(sprite-position($map-2x, $sprite), 2) / $divide);
+	        height: floor(sprite-height($sprite, $map-2x) / $divide);
+	        width: floor(sprite-width($sprite, $map-2x) / $divide);
+	    }
+	}
+}
+
+
+/********************************************************************
+	 ____        _   _                ____             _ _       
+	| __ ) _   _| |_| |_ ___  _ __   / ___| _ __  _ __(_) |_ ___ 
+	|  _ \| | | | __| __/ _ \| '_ \  \___ \| '_ \| '__| | __/ _ \
+	| |_) | |_| | |_| || (_) | | | |  ___) | |_) | |  | | ||  __/
+	|____/ \__,_|\__|\__\___/|_| |_| |____/| .__/|_|  |_|\__\___|
+	                                       |_|                               
+********************************************************************/
+
+$map-buttons: sprite-map("buttons/*.png", $layout: smart, $spacing: 10px);
+$map-buttons-2x: sprite-map("buttons-retina/*.png", $layout: smart, $spacing: 20px);
+
+/**
+ * Print background sprite button
+ * 
+ * @param {string} $name
+ * @param {number} $percentage [default 100]
+ */
+@mixin sprite-button($name, $percentage:100) {
+	@include background-sprite($name, $map-buttons, $map-buttons-2x, $percentage);
+}
+
+/**
+ * Get height of sprite button in pixels
+ * 
+ * @param {string} $name
+ * @param {number} $percentage [default 100]
+ * @return {number}
+ */
+@function sprite-button-height($name, $percentage:100) {
+	@return sprite-height($name, $map-buttons, $percentage);
+}
+
+/**
+ * Get height of sprite button in pixels
+ * 
+ * @param {string} $name
+ * @param {number} $percentage [default 100]
+ * @return {number}
+ */
+@function sprite-button-width($name, $percentage:100) {
+	@return sprite-width($name, $map-buttons, $percentage);
+}
+
+
+/********************************************************************
+	 ___                  ____             _ _       
+	|_ _|___ ___  _ __   / ___| _ __  _ __(_) |_ ___ 
+	 | |/ __/ _ \| '_ \  \___ \| '_ \| '__| | __/ _ \
+	 | | (_| (_) | | | |  ___) | |_) | |  | | ||  __/
+	|___\___\___/|_| |_| |____/| .__/|_|  |_|\__\___|
+	                           |_|                                
+********************************************************************/
+
+$map-icons: sprite-map("icons/*.png", $layout: smart);
+$map-icons-2x: sprite-map("icons-retina/*.png", $layout: smart);
+
+/**
+ * Print background sprite button
+ * 
+ * @param {string} $name
+ * @param {number} $percentage [default 100]
+ */
+@mixin sprite-icon($name, $percentage:100) {
+	@include background-sprite($name, $map-icons, $map-icons-2x, $percentage);
+}
+
+/**
+ * Get height of sprite button in pixels
+ * 
+ * @param {string} $name
+ * @param {number} $percentage [default 100]
+ * @return {number}
+ */
+@function sprite-icon-height($name, $percentage:100) {
+	@return sprite-height($name, $map-icons, $percentage);
+}
+
+/**
+ * Get height of sprite button in pixels
+ * 
+ * @param {string} $name
+ * @param {number} $percentage [default 100]
+ * @return {number}
+ */
+@function sprite-icon-width($name, $percentage:100) {
+	@return sprite-width($name, $map-icons, $percentage);
+}
+
+/***************************************************************
+     ____             _ _       
+    / ___| _ __  _ __(_) |_ ___ 
+    \___ \| '_ \| '__| | __/ _ \
+     ___) | |_) | |  | | ||  __/
+    |____/| .__/|_|  |_|\__\___|
+          |_|                   
+
+    @author : Ferry Brouwer
+    @see : http://compass-style.org/reference/compass/utilities/sprites/
+    This template handles Sprites with compass
+
+/***************************************************************/
+
+/**
+ * Get sprite width in pixels
+ * Same as image-width, but retina proof and scalable
+ * 
+ * @param {string} name
+ * @param {sprite-map} $map
+ * @param {number} $percentage [default 100]
+ * @return {number}
+ */
+@function sprite-width($name, $map, $percentage:100) {
+    @return floor(image-width(sprite-file($map, $name)) * ($percentage / 100));
+}
+
+/**
+ * Get sprite width in pixels
+ * Same as image-width, but retina proof and scalable
+ * 
+ * @param {string} name
+ * @param {sprite-map} $map
+ * @param {number} $percentage [default 100]
+ * @return {number}
+ */
+@function sprite-height($name, $map, $percentage:100) {
+    @return floor(image-height(sprite-file($map, $name)) * ($percentage/100));
+}

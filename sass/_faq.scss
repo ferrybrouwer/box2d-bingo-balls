@@ -1,0 +1,73 @@
+/**
+ * Frequently Asked Questions
+ *
+ * @type module
+ * @author Ferry Brouwer <ferry@happy-online.nl>
+ */
+
+ul.faq-list {
+	@include reset-list-style;
+	padding-left: 20px;
+
+	& > li {
+		$arrow-width: 6px;
+		@include reset-list-style;
+		position: relative;
+		margin-top: 1em;
+
+		&:before {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 0;
+			border-top: $arrow-width solid transparent;
+			border-bottom: $arrow-width solid transparent;
+			border-left: $arrow-width solid $color-blue;
+			left: -15px;
+			top: 5px;
+		}
+
+		// add arrow before list open
+		&.open {
+			&:before {
+				border-left: $arrow-width solid transparent;
+				border-right: $arrow-width solid transparent;
+				border-top: $arrow-width solid $color-blue;
+				left: -19px;
+				top: 8px;
+			}
+
+			.answer {
+				@include opacity(1);
+			}
+		}
+
+		// question row
+		a.question {
+			font-family: 'Open Sans Semibold';
+			text-decoration: inherit;
+			color: inherit;
+			font-weight: normal;
+		}
+
+		// answer row
+		.answer {
+			@include transition(opacity 300ms ease-out);
+			@include opacity(0);
+			display: none;
+		}
+
+		// add label before row
+		[data-label]:before {
+			content: attr(data-label) ":";
+			font-family: 'Open Sans Semibold';
+			display: inline-block;
+			margin-right: 0.5em;
+		}
+
+		// overwrite the normal margin-top for listed elements
+		ul {
+			margin-top: 0.3em;
+		}
+	}
+}

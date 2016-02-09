@@ -1,0 +1,1383 @@
+/*
+	 _   _       _   _  __ _           _   _               _                
+	| \ | |     | | (_)/ _(_)         | | (_)             | |               
+	|  \| | ___ | |_ _| |_ _  ___ __ _| |_ _  ___  _ __   | |__   __ _ _ __ 
+	| . ` |/ _ \| __| |  _| |/ __/ _` | __| |/ _ \| '_ \  | '_ \ / _` | '__|
+	| |\  | (_) | |_| | | | | (_| (_| | |_| | (_) | | | | | |_) | (_| | |   
+	|_| \_|\___/ \__|_|_| |_|\___\__,_|\__|_|\___/|_| |_| |_.__/ \__,_|_|   
+	                                                                        
+	in header                                                                        
+ */
+.notificationbar {
+	background-color: #000;
+	height: 47px;
+	line-height: 47px;
+	min-width: 980px;
+	color: #fff;
+	font-size: px-to-em(21);
+	
+	.wrapper {
+		@include perspective(400);
+		@include transform-style(preserve-3d);
+		position: relative;
+		overflow: hidden;
+		height: 100%;
+        width: 100%;
+
+		span {
+			@include backface-visibility(hidden);
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			visibility: hidden;
+		}
+	}
+}
+
+
+/*
+	 ____  _              _                                 
+	|  _ \| |            | |                                
+	| |_) | |_   _  ___  | |__   __ _ _ __  _ __   ___ _ __ 
+	|  _ <| | | | |/ _ \ | '_ \ / _` | '_ \| '_ \ / _ \ '__|
+	| |_) | | |_| |  __/ | |_) | (_| | | | | | | |  __/ |   
+	|____/|_|\__,_|\___| |_.__/ \__,_|_| |_|_| |_|\___|_|   
+	                                                        
+	in header
+ */
+.blue-banner {
+	@include clearfix;
+	background-color: $color-blue;
+	position: relative;
+	min-width: 980px;
+	min-height: 110px;
+	margin-bottom: $margin * 2;
+
+	.wrapper {
+		@include clearfix;
+		@include box-sizing( border-box );
+		padding: 0 $margin $margin $margin;
+		position: relative;
+		min-height: 100%;
+
+		& > img.cards {
+			position: absolute;
+			z-index: 1;
+			bottom: -108px;
+			left: 10px;
+		}
+	}
+
+	header {
+		text-align: center;
+
+		h1 {
+			color: #fff;
+			font-weight: normal;
+			margin: 1em 0;
+		}
+
+		h2.sub-title {
+			color: #FFF;
+			margin-top: -1em;
+			font-size: 1.8em;
+			margin-bottom: 1.5em;
+			font-weight: normal;
+		}
+	}
+
+	& > img {
+		pointer-events: none;
+		z-index: 1;
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 64px;
+		min-width: 980px;
+        
+        @include transform-style(preserve-3d);
+	    @include backface-visibility(hidden);
+	    bottom: -1px;
+	}
+
+	a:not(.button) {
+		color: lighten($color-blue, 30);
+		&:hover {color: #fff;}
+	}
+}
+body.register .blue-banner {
+	header h1 {
+		margin-bottom: 0.7em;
+		margin-top: 0.5em!important;
+	}
+	.column-2 {
+		figure {
+			width: 60%;
+			img {max-width: 90%;}
+		}
+		form {
+			width: 30%;
+			margin-right: 10%;
+		}
+	}
+	form {
+		@include before-content {
+			@include sprite-icon(arrow-down);
+			left: 50%;
+			top: 0;
+			margin-left: -#{sprite-icon-width(arrow-down)/2};
+		}
+		padding-top: sprite-icon-height(arrow-down) + 10;
+		margin-bottom: 50px;
+
+		input[type="text"],
+		input[type="email"],
+		input[type="password"] {
+			width: 100%;
+		}
+
+		input[type="submit"],
+		button,
+		a.button {
+			width: 250px;
+		}
+
+		button,
+		.tac {
+			margin-top: 1em;
+		}
+	}
+}
+
+/*
+	 _    _                 _ _                        _        
+	| |  | |               (_) |                      | |       
+	| |__| | _____      __  _| |_  __      _____  _ __| | _____ 
+	|  __  |/ _ \ \ /\ / / | | __| \ \ /\ / / _ \| '__| |/ / __|
+	| |  | | (_) \ V  V /  | | |_   \ V  V / (_) | |  |   <\__ \
+	|_|  |_|\___/ \_/\_/   |_|\__|   \_/\_/ \___/|_|  |_|\_\___/
+	                                                            
+	section at register page                                                            
+ */
+.howitworks {
+	@extend %grey-section-block;
+	background-color: #fff!important;
+	padding: 0!important;
+
+	.table-columns {
+		margin-top: 3em;
+
+		.left-column {
+			width: 430px;
+		}
+	}
+
+	ul {
+		@include clearfix;
+		list-style: none;
+		margin: 0;
+		padding: 10px 0 0 0;
+
+		li {
+			list-style: none;
+			padding: 0 20px 0 50px;
+			min-width: 33%;
+			margin-top: 2em;
+
+			&:first-child {
+				margin-top: 0;
+			}
+
+			p {
+				margin: 0;
+			}
+
+			h2 {
+				margin-top: 0;
+				position: relative;
+				
+				// attach labels to the h2, instead of the li
+				// firefox doens't support position relative on table-cell elements				
+				@include before-content {
+					@include border-radius(50%);
+					@include box-sizing( border-box );
+					content: '1';
+					color: #fff;
+					background-color: $color-purple;
+					font-family: 'Open Sans Semibold';
+					font-size: 1em;
+					width: 37px;
+					height: 37px;
+					text-align: center;
+					padding-top: 0.6em;
+					left: -50px;
+					top: -10px;
+				}
+			}
+
+			// fill labels
+			&:nth-child(2) h2 {
+				*background-color: #fff;
+				&:before {
+					content: '2';
+					background-color: $color-green;
+				}
+			}
+
+			&:nth-child(3) h2 {
+				*background-color: #fff;
+				&:before {
+					content: '3';
+					background-color: $color-orange;
+				}
+			}
+		}
+	}
+}
+
+
+/*
+	  _____                       _                                 
+	 / ____|                     | |                                
+	| |  __ _ __ ___  ___ _ __   | |__   __ _ _ __  _ __   ___ _ __ 
+	| | |_ | '__/ _ \/ _ \ '_ \  | '_ \ / _` | '_ \| '_ \ / _ \ '__|
+	| |__| | | |  __/  __/ | | | | |_) | (_| | | | | | | |  __/ |   
+	 \_____|_|  \___|\___|_| |_| |_.__/ \__,_|_| |_|_| |_|\___|_|   
+
+	section at register page
+ */
+.green-banner {
+	margin-top: $margin;
+	@include box-sizing( border-box );
+	@include border-radius(5px);
+	background-color: $color-green;
+	padding: 1em $margin;
+	margin-bottom: $margin*2;
+
+	header h1 {
+		color: #fff;
+		margin: 0 0 0.2em 0;
+	}
+	p {
+		margin: 0;
+	}
+
+	&.cash {
+		padding-left: sprite-icon-width(banner-cash) + 30;
+		min-height: sprite-icon-height(banner-cash) + 25;
+		min-height: #{sprite-icon-height(banner-cash)}\9; // IE8 hack
+
+		@include before-content {
+			@include sprite-icon(banner-cash);
+			left: 1em;
+		}
+	}
+}
+
+
+/*
+	 _____      _            _     _       _     _ _       _     _       
+	|  __ \    (_)          | |   (_)     | |   | (_)     | |   | |      
+	| |__) | __ _  ___ ___  | |__  _  __ _| |__ | |_  __ _| |__ | |_ ___ 
+	|  ___/ '__| |/ __/ _ \ | '_ \| |/ _` | '_ \| | |/ _` | '_ \| __/ __|
+	| |   | |  | | (_|  __/ | | | | | (_| | | | | | | (_| | | | | |_\__ \
+	|_|   |_|  |_|\___\___| |_| |_|_|\__, |_| |_|_|_|\__, |_| |_|\__|___/
+	                                  __/ |           __/ |              
+	                                 |___/           |___/               
+	show 5 highlight prices
+	at register- and bingotrekking page
+ */
+
+/**
+ * Discount badges
+ */
+.discount-badge {
+	@include border-radius( 50% );
+	@include box-sizing( border-box );
+	background-color: #fff;
+	display: table;
+	border: 1px solid $color-grey-border;
+	color: #fff;
+	width: 120px;
+	height: 120px;
+	vertical-align: middle;
+	left: 50%;
+	margin-left: -60px;
+
+	// IE hack: doesn't support border-radius, so resize the discount badge
+	width: 100px\9;
+	height: 100px\9;
+	margin-left: -50px\9;
+	
+	// inner colored circle
+	@include before-content {
+		@include border-radius( 50% );
+		width: 106px;
+		height: 106px;
+		background-color: $color-green;
+		top: 6px;
+		left: 6px;
+		z-index: 0;
+
+		// IE hack
+		width: 88px\9;
+		height: 88px\9;
+	}
+	
+	// centeralize the text in vertical and horizontal position
+	& > * {
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+		position: relative;
+		z-index: 2;
+		font-family: 'Open Sans';
+		font-weight: bold;
+		font-size: 3.5em;
+		line-height: 1em;
+	}
+	
+	// transfer [data-color] into the right badge background color
+	@each $emailbingo-color in $emailbingo-colors {
+		&[data-color="#{nth($emailbingo-color, 1)}"] {
+			background-color: #fff; // fix for iOS devices
+
+			&:before {
+				background-color: nth($emailbingo-color, 2);
+			}
+		}
+	}
+	
+	// set fontsize when data-fontsize is small
+	&[data-fontsize="small"] {
+		font-size: 0.7em;
+	}
+}
+
+// firefox hack (any version of firefox)
+@-moz-document url-prefix() { 
+	.discount-badge:before { 
+		top: 7px;
+		left: 7px;
+	}
+}
+
+// safari only hack (all safari versions, except google chrome)
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+	::i-block-chrome, .discount-badge:before { 
+		top: 7px;
+		left: 7px;
+	}
+}
+
+/**
+ * Date badge
+ */
+.date-badge {
+	@extend .discount-badge;
+	& > * {
+		font-size: 3em;
+		line-height: 0.8em;
+		span {
+			display: block;
+			font-weight: normal;
+			font-size: 0.5em;
+		}
+	}
+}
+
+/**
+ * Placeholder
+ * Browse price article
+ *
+ * See page register (Dit waren de bingoprijzen vorige week)
+ * See page trekking
+ */
+%browse-price-article {
+	@include box-sizing( border-box );
+	padding: $margin;
+	float: left;
+	width: column-width-percentage(5);
+
+	// images (logo and price)
+	figure {
+		position: relative;
+		margin-top: -25px;
+		
+		.price {
+			width: 166px;
+			// height: 140px;
+			display: table-cell;
+			vertical-align: bottom;
+			text-align: center;
+
+			img {
+				display: block;	
+				margin: 0 auto;
+				max-width: 100%;
+				width: 165px;
+				height: 198px;
+			}
+		}
+
+		.logo {
+			display: block;
+			height: 50px;
+			margin-top: 0.8em;
+			
+			span {
+				display: table-cell;
+				height: 50px;
+				width: 166px;
+				vertical-align: middle;
+				text-align: center;
+					
+				img {
+					display: inline-block;
+					// max-height: 50px;
+					max-width: 100%;	
+				}
+			}
+		}
+	}
+
+	header {
+		margin-top: 1em;
+
+		time {
+			display: block;
+			font-family: 'Open Sans';
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 0.5em;
+		}
+		h2 {
+			font-family: 'Open Sans';
+			font-weight: normal;
+			font-size: 1.2em;
+			text-align: center;
+			margin-top: 0;
+		}
+	}
+	button {
+		font-size: 1.2em;
+	}
+}
+
+/**
+ * Placeholder grey section block
+ * header in the center with a grey background
+ *
+ * Used for section.price-highlights and section.sponsors
+ */
+%grey-section-block {
+	@include box-sizing( border-box );
+	overflow: hidden;
+	background-color: $color-grey-light;
+	margin-top: $margin * 2;
+	padding: $margin*2 0 ;
+	min-width: 980px;
+
+	header h1 {
+		text-align: center;
+		margin: 0 0 $margin 0;
+	}
+}
+
+section.price-highlights {
+	@extend %grey-section-block;
+	margin-bottom: -3em;
+
+	.prices {
+		@include clearfix;
+		article.price {
+			@extend %browse-price-article;
+		}
+	}
+}
+
+
+/*
+	 _____          _                                  _          
+	|  __ \        | |                                (_)         
+	| |__) |___  __| | ___  ___ _ __ ___    _ __  _ __ _  ___ ___ 
+	|  _  // _ \/ _` |/ _ \/ _ \ '_ ` _ \  | '_ \| '__| |/ __/ _ \
+	| | \ \  __/ (_| |  __/  __/ | | | | | | |_) | |  | | (_|  __/
+	|_|  \_\___|\__,_|\___|\___|_| |_| |_| | .__/|_|  |_|\___\___|
+	                                       | |                    
+	                                       |_|                    
+	at verzilver page
+ */
+.redeem-price {
+	text-align: center;
+	margin-bottom: 10em;
+	padding-top: 2em;
+	
+	// overwrite button sizes
+	a.button {
+		padding: 0.5em 1.5em;
+		font-size: 1.3em;
+	}
+
+	.wrapper {
+		@include box-sizing( border-box );
+		height: 475px;
+		width: 100%;
+		padding-left: 0;
+		padding-right: 0;
+		
+		/**
+		 * Set all children as absolute elements
+		 * Enable elements for animation
+		 */
+		& > *[data-view] {
+			@include box-sizing( border-box );
+			@include gpu-element;
+			position: relative;
+			width: 650px;
+			margin-left: -325px;
+			position: absolute;
+			overflow: hidden;
+			left: 150%;
+		
+			// show the first element (video)
+			&:first-child {
+				left: 50%;
+			}
+		}
+
+		// video		
+		section[data-view="video"] {
+			height: 400px;
+		}
+		
+		// question
+		section.question {
+			background-color: #fff;
+			text-align: left; 
+			padding: $margin;
+
+			// overwrite heading h1 style
+			h1 {
+				color: #000;
+				margin-bottom: 1em;
+				font-weight: bold;
+				margin-top: 0;
+				text-align: left;
+				font-size: 2.7em;
+			}
+
+            // set size buttons
+            a.button {
+                display: block;
+                margin-right: 2em;
+            }
+			
+			// overwrite link styles
+			a:not(.button) {
+				display: block;
+				color: $color-blue;
+
+				&:hover {
+					color: lighten($color-blue, 10);
+				}
+
+				&.replay {
+					margin-top: 2em;
+				}
+			}
+			
+			// set column-2 to act like a table
+			.column-2 {
+				display: table;
+                width: 100%;
+
+				& > * {
+					display: table-cell;
+					vertical-align: bottom;
+					float: none;
+				}
+			}
+
+			.price-info {
+				position: relative;
+				text-align: left;
+				
+				img {
+					&.price {
+						display: inline-block;
+						max-height: 270px;
+					}
+					&.logo {
+						position: absolute;
+						bottom: $margin;
+						right: $margin;
+                        max-width: 120px;
+					}
+				}
+			}
+
+			&[data-view="wrong-answer"] .column-2 .controll-action {
+				vertical-align: middle;
+				padding: 1em 2em;
+
+				a.button {
+					margin: 2em 0;
+				}
+			}
+		}
+		
+		// conversion
+		section[data-view="conversion"] {
+            padding: $margin;
+            overflow: visible;
+
+			div.column-2 {
+                background-color: #fff;
+				display: table;
+                width: 100%;
+                overflow: visible;
+
+                & > * {
+                    width: 50%;
+					padding: $margin;
+                    display: table-cell;
+                    vertical-align: bottom;
+                    float: none;
+
+					&:first-child {
+						text-align: left;
+					}
+				}
+			}
+            
+            // price information
+            // images (product- and logo image) + badge
+            .price-info {
+                position: relative;
+                text-align: left;
+                
+                img {
+                    &.price {
+                        display: inline-block;
+                        max-width: 100%;
+                        max-height: 300px;
+                    }
+                    &.logo {
+                        position: absolute;
+                        bottom: $margin;
+                        right: $margin;
+                        max-width: 120px;
+                    }
+                }
+
+                .discount-badge:before {
+                    top: 5px;
+                }
+            }
+            
+            // share text at the bottom
+			& > h2 {
+                color: #fff;
+                font-weight: normal;
+				margin-top: 0.3em;
+				font-size: 1.7em;
+                margin: 0.8em px-to-em(50);
+
+                // when is IE, position element absolute
+                // to enable clicking due pointer-events bowl not working
+                position: absolute\9;
+                z-index: 9999\9;
+                bottom: -70px\9;
+			}
+		      
+            // card activated
+            .card-activated {
+				min-height: 130px;
+
+                // card smaller card
+                .card {
+                    @include single-card(75px, 110px, 5px);
+                    // @include transform(rotate(-3deg));
+                    visibility: visible !important;
+                    z-index: 99;
+                    top: 35px;
+                    left: 35px;
+
+                    header h2 {
+                        margin: 0;
+                        font-size: 0.6em;
+                        left: 8px;
+                        top: 8px;
+                    }
+    
+                    .card-labels {
+                        margin: 3px;
+                        padding: 20px 3px 3px 3px;
+                        width: 69px;
+
+                        span.label-item {
+                            font-size: 0.8em;
+                            width: 20px;
+                            height: 20px;
+                            line-height: 20px;
+                            span {
+                                line-height: 20px;
+                            }
+                        }
+                    }
+                }
+
+    			// rotate label
+    			.label {
+                    // @include transform(rotate(-3deg));
+    				margin-bottom: 1.6em;
+                    margin-left: 75px;
+                    padding-left: px-tp-em(20);
+                    position: absolute;
+                    top: 50px;
+    			}
+            }// .card-activated
+                
+            // title
+            .title {
+                font-size: 1.4em;
+
+                h1 {
+                    font-size: 1.8em;
+                    margin: 0.4em 0 0.6em 0;
+                }
+            }
+			
+			// position discout badge
+			.discount-badge {
+				position: absolute;
+				right: 0;
+				top: 30%;
+				left: auto;
+			}
+		}
+	}
+}
+// firefox hack (any version of firefox)
+@-moz-document url-prefix() { 
+    .redeem-price section[data-view="conversion"] .discount-badge:before { 
+        top: 7px !important;
+    }
+}
+
+
+/*
+	 ____            _      _     _             
+	|  _ \          (_)    | |   | |            
+	| |_) | ___ _ __ _  ___| |__ | |_ ___ _ __  
+	|  _ < / _ \ '__| |/ __| '_ \| __/ _ \ '_ \ 
+	| |_) |  __/ |  | | (__| | | | ||  __/ | | |
+	|____/ \___|_|  |_|\___|_| |_|\__\___|_| |_|
+	
+	at berichten page
+ */
+
+/**
+ * Pagina element
+ */
+nav.paginate {
+	@extend %wrapper;
+	text-align: right;
+
+	ul {
+		@include clearfix;
+		list-style: none;
+		display: inline-block;
+
+		li {
+			list-style: none;
+			float: left;
+			margin-left: 0.3em;
+			padding: 0;
+		
+			a {
+				@include transition( background-color 250ms ease-out );
+				@include box-sizing( border-box );
+				background-color: $color-grey-light;
+				text-decoration: none;
+				color: #000;
+				padding: 0.5em 1em;
+				display: block;
+
+				&:hover {
+					background-color: darken($color-grey-light, 10);
+				}
+			}
+
+			span {
+				@include box-sizing( border-box );
+				background-color: $color-grey-light;
+				padding: 0.5em 1em;
+				display: block;
+			}
+
+			&.active span {
+				background-color: $color-green;
+			}
+
+			&.disabled span {
+				background-color: lighten($color-grey-light, 2);
+				pointer-events: none;
+			}
+		}
+	}
+}
+
+/**
+ * Placeholder
+ * Items cycle with grey border
+ * container of multiple articles
+ */
+.grey-cycle-items,
+%items {
+	@include box-sizing( border-box );
+	border: 3px solid $color-grey-light;
+	background-color: #fff;
+
+	& > article {
+		@include clearfix;
+		@include box-sizing( border-box );
+		padding: $margin;
+
+		header h2 {
+			margin-top: 0;
+			margin-bottom: 1em;
+		}
+
+		& > p {
+			margin: 0;
+		}
+
+		&:nth-child(even) {
+			background-color: $color-grey-light;
+		}
+	}
+}
+.berichten {
+	@extend %items;
+
+	article header {
+		@include clearfix;
+		
+		& > * {
+			@include box-sizing( border-box );
+			text-align: right;
+			float: right;
+			width: 20%;
+
+			&:first-child {
+				text-align: left;
+				float: left;
+				width: 80%;
+			}
+		}
+	}
+}
+
+
+/*
+	 _____      _               
+	|  __ \    (_)              
+	| |__) | __ _  ___ ___  ___ 
+	|  ___/ '__| |/ __/ _ \/ __|
+	| |   | |  | | (_|  __/\__ \
+	|_|   |_|  |_|\___\___||___/
+	
+	at prices page
+ */
+.coupons {
+
+	// filter
+	aside.filter form {
+		@include clearfix;
+		
+		// float direct childrens
+		& > * {
+			@include box-sizing( border-box );
+			float: right;
+			margin: 0;
+
+			&:first-child {
+				float: left;
+			}
+		}
+
+		fieldset {
+			& > * {
+				display: inline-block;
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+
+			& > label {
+				margin-right: $margin;
+				font-weight: bold;
+			}
+			
+			// filterby items
+			&.filterby {
+				@include clearfix;
+				
+				dl {
+					background-color: $color-grey-light;
+					padding: 1em $margin;
+
+					& > * {
+						display: inline-block;
+						margin: 0;
+
+						&:first-child {
+							margin-right: $margin;
+						}
+					}
+				}
+			}
+		}
+
+		small {
+			display: block;
+			text-align: right;
+			margin: 1em 0;
+		}
+		
+		// set widths input fields
+		input[type="text"] {
+			width: 200px;
+		}
+	}// .filter
+
+	// coupon articles
+	.coupons-articles {
+		@extend %items;
+
+		article {
+			@include box-sizing( border-box );
+			overflow: hidden;
+			position: relative;
+			padding: $margin;
+
+			// columns the items
+			
+			.coupon-container {
+				display: table;
+				width: 100%;
+				
+				& > * {
+					display: table-cell;
+					vertical-align: bottom;
+				}	
+			}
+
+			// style badge
+			span.badge {
+				@include prefix-property(transform-origin, 50% 50%);
+				@include transform( rotate(-30deg) );
+				float: none;
+				display: block;
+				position: absolute;
+				left: -59px;
+				top: 41px;
+				color: #fff;
+				padding: 0.5em 0;
+				text-transform: uppercase;
+				font-weight: bold;
+				text-align: center;
+				width: 300px;
+				
+				// IE 8 hack
+				left: 1em\9;
+				top: 1em\9;
+				position: static\9;
+				margin-bottom: 1em\9;
+
+				mark {
+					color: #ffff00;
+				}
+			}
+
+			h2 {
+				margin-top: 0!important;
+				margin-bottom: 0.5em!important;
+			}
+
+			// style types
+			&[data-type="discount"] {
+				h2 {
+					color: $color-purple;
+					font-size: $heading-1;
+				}
+				span.badge {
+					background-color: $color-purple;
+				}
+				.controll-action .code-container {
+					background-color: $color-purple;
+				}
+			}
+			&[data-type="free-price"] {
+				h2 {
+					color: $color-red;
+					font-size: $heading-1;
+				}
+				span.badge {
+					background-color: $color-red;
+				}
+				.controll-action .code-container {
+					background-color: $color-red;
+				}
+			}
+
+			// images
+			figure {
+				width: 300px;
+
+				& > div {
+					display: table;
+					width: 100%;
+					text-align: right;
+
+					img {
+						display: table-cell;
+						vertical-align: bottom;
+						display: inline-block;
+
+						&.logo {
+							max-width: 120px;
+							margin-top: 70px;
+							margin-top: 0\9;
+						}
+						&.price-coupon {
+							max-width: 150px;
+							margin-left: 1em;
+							margin-top: 40px;
+							margin-top: 0\9;
+						}
+					}
+				}
+			}
+
+			// description
+			.description {
+				width: 345px;
+				padding: 0 $margin*2;
+				vertical-align: middle;
+			}
+
+			// control action
+			.controll-action {
+				width: 260px;
+				vertical-align: top;
+					
+				.code-block {
+					@include box-sizing( border-box );
+					background-color: $color-grey-light;
+					padding: $margin;
+					position: relative;
+					padding-top: 60px;
+
+					.code-container {
+						@include box-sizing( border-box );
+						text-align: right;
+						display: block;
+						padding: 0.5em;
+						color: #fff;
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+
+						span.code {
+							background-color: #fff;
+							display: inline-block;
+							padding: 0.5em;
+							color: #000;
+							text-transform: uppercase;
+							font-weight: bold;
+							font-size: 1.8em;
+							margin-left: 1em;
+						}
+					}
+				}
+
+				a.button {
+					width: 100%;
+					margin-top: 1em;
+				}
+			}
+
+			&:nth-child(even) .controll-action .code-block {
+				background-color: darken($color-grey-light, 5);
+			}
+		}
+	}
+}
+
+/*
+	                                   _   
+	    /\                            | |  
+	   /  \   ___ ___ ___  _   _ _ __ | |_ 
+	  / /\ \ / __/ __/ _ \| | | | '_ \| __|
+	 / ____ \ (_| (_| (_) | |_| | | | | |_ 
+	/_/    \_\___\___\___/ \__,_|_| |_|\__|
+	
+	at account page
+ */
+.account form#editdetailsform {
+	width: 600px;
+	margin-top: 2em;
+}
+
+
+/*
+	  _____       _     _       
+	 / ____|     | |   | |      
+	| (___   __ _| | __| | ___  
+	 \___ \ / _` | |/ _` |/ _ \ 
+	 ____) | (_| | | (_| | (_) |
+	|_____/ \__,_|_|\__,_|\___/ 
+
+	at saldo page
+ */
+.saldo .controll-action {
+	margin: 2em 0;
+
+	a:not(.button) {
+		display: block;
+		margin: 1em 0;
+	}
+}
+
+/*
+	  _____ _                    
+	 / ____| |                   
+	| (___ | |__   __ _ _ __ ___ 
+	 \___ \| '_ \ / _` | '__/ _ \
+	 ____) | | | | (_| | | |  __/
+	|_____/|_| |_|\__,_|_|  \___|
+ */
+.share {
+	@extend %items;
+}
+
+/*
+	 _____                 
+	|  __ \                
+	| |__) |_ _  __ _  ___ 
+	|  ___/ _` |/ _` |/ _ \
+	| |  | (_| | (_| |  __/
+	|_|   \__,_|\__, |\___|
+	             __/ |     
+	            |___/      
+ */
+article.page header h2 {
+	font-size: $heading-1;
+	font-family: 'Signika';
+	font-weight: bold;
+	line-height: 1.1em;
+	margin: 1.5em 0 1em 0;
+}
+
+
+/*
+     ____  _              _               
+    |  _ \(_)            | |              
+    | |_) |_  __ _    ___| | __ _ ___ ___ 
+    |  _ <| |/ _` |  / __| |/ _` / __/ __|
+    | |_) | | (_| | | (__| | (_| \__ \__ \
+    |____/|_|\__, |  \___|_|\__,_|___/___/
+              __/ |                       
+             |___/                        
+ */
+.big {
+    font-size: 1.5em;
+    font-weight: bold;
+	line-height: 1.4em;
+}
+
+/*
+     _____                                 
+    |_   _|                                
+      | |  _ __ ___   __ _  __ _  ___  ___ 
+      | | | '_ ` _ \ / _` |/ _` |/ _ \/ __|
+     _| |_| | | | | | (_| | (_| |  __/\__ \
+    |_____|_| |_| |_|\__,_|\__, |\___||___/
+                            __/ |          
+                           |___/           
+ */
+.page {
+    @include clearfix;
+	min-height: 400px;
+
+    img {
+        display: block;
+
+        &.align-left {
+            float: left;
+            margin: 1em 3em 3em 0;
+        }
+        &.align-right {
+            float: right;
+            margin: 1em 0 3em 3em; 
+        }
+    }
+}
+
+/*
+     _______    _     _                  _                           
+    |__   __|  | |   | |                | |                          
+       | | __ _| |__ | | ___    ___ ___ | |_   _ _ __ ___  _ __  ___ 
+       | |/ _` | '_ \| |/ _ \  / __/ _ \| | | | | '_ ` _ \| '_ \/ __|
+       | | (_| | |_) | |  __/ | (_| (_) | | |_| | | | | | | | | \__ \
+       |_|\__,_|_.__/|_|\___|  \___\___/|_|\__,_|_| |_| |_|_| |_|___/
+
+ */
+.table-columns {
+    display: table;
+    table-layout: fixed;
+//	width: 100%;
+
+    & > * {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 2em;
+
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+
+	&.align-top > * {
+		vertical-align: top;
+	}
+}
+
+/*
+      _____      _                         ____     _____            _        _                 
+     / ____|    | |                       |___ \   / ____|          | |      (_)                
+    | |     ___ | |_   _ _ __ ___  _ __     __) | | |     ___  _ __ | |_ __ _ _ _ __   ___ _ __ 
+    | |    / _ \| | | | | '_ ` _ \| '_ \   |__ <  | |    / _ \| '_ \| __/ _` | | '_ \ / _ \ '__|
+    | |___| (_) | | |_| | | | | | | | | |  ___) | | |___| (_) | | | | || (_| | | | | |  __/ |   
+     \_____\___/|_|\__,_|_| |_| |_|_| |_| |____/   \_____\___/|_| |_|\__\__,_|_|_| |_|\___|_|                                                                                                
+                                                                                                
+ */
+.column-3-container {
+    @include clearfix;
+    margin: 3em 0;
+
+    & > * {
+        @include box-sizing(border-box);
+        float: left;
+        $block-width: (980px - (10px*2))/3;
+        width: $block-width;
+        margin-left: 10px;
+
+        &:first-child,
+        &:nth-child(3n+1) {
+            margin-left: 0;
+        }
+    }
+
+    .block {
+        border: 3px solid #F4F4F4;
+        background-color: #fff;
+        padding: 15px;
+
+        & > *:first-child,
+        & > *:first-child > *:first-child {
+            margin-top: 0;
+        }
+
+        & > *:last-child,
+        & > *:last-child > *:last-child {
+            margin-bottom: 0;
+        }
+
+        h2 {
+            color: #EC7503;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            margin-top: 2em;
+        }
+    }
+}
+
+/*
+     _______          _ _   _       
+    |__   __|        | | | (_)      
+       | | ___   ___ | | |_ _ _ __  
+       | |/ _ \ / _ \| | __| | '_ \ 
+       | | (_) | (_) | | |_| | |_) |
+       |_|\___/ \___/|_|\__|_| .__/ 
+                             | |    
+                             |_|    
+ */
+.tooltip {
+    $color-tooltip-background: #eceff5;
+    $tooltip-size: 10px;
+    margin: 2em 0;
+
+    @include box-sizing(border-box);
+    position: relative;
+    background-color: $color-tooltip-background;
+    padding: 15px;
+
+    & > *:first-child,
+    & > *:first-child > *:first-child {
+        margin-top: 0;
+    }
+
+    & > *:last-child,
+    & > *:last-child > *:last-child {
+        margin-bottom: 0;
+    }
+    
+    &.top:before,
+    &.bottom:before {
+        content: '';
+        position: absolute;
+        width: 0; 
+        height: 0; 
+    }
+
+    &.top {
+        margin-top: #{$tooltip-size + 20px} !important;
+
+        &:before {
+            top: -$tooltip-size;
+            border-left: $tooltip-size solid transparent;
+            border-right: $tooltip-size solid transparent;
+            border-bottom: $tooltip-size solid $color-tooltip-background;
+        }
+    }
+
+    &.bottom {
+        margin-bottom: #{$tooltip-size} !important;
+
+        &:before {
+            bottom: -$tooltip-size;
+            border-left: $tooltip-size solid transparent;
+            border-right: $tooltip-size solid transparent;
+            border-top: $tooltip-size solid $color-tooltip-background;
+        }
+    }
+}
+
+
+/*
+Page title
+----------- */
+.page-title {
+	margin-top: 0;
+}

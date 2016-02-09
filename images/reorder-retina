@@ -1,0 +1,18 @@
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $BASEDIR
+
+reorder () {
+	mkdir ./${1}-retina
+	cd ./$1
+	for file in *@2x.png 
+	do
+	mv "${file}" ../${1}-retina/"${file%@2x.png}.png"
+	done
+	cd ../
+	echo "Reorder complete for $1"
+}
+
+reorder buttons
+reorder icons
+
+exit
